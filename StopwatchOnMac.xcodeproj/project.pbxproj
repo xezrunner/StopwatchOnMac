@@ -6,17 +6,17 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		215B14ED2E004A1100DD5C3F /* StopwatchOnMac.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B14EB2E004A1100DD5C3F /* StopwatchOnMac.swift */; };
+		215B14F22E00558200DD5C3F /* StopwatchWindowSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B14F12E00558200DD5C3F /* StopwatchWindowSupport.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		215B14D42E0049BB00DD5C3F /* StopwatchOnMac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StopwatchOnMac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		215B14E82E004A0B00DD5C3F /* StopwatchOnMac.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = StopwatchOnMac.xcodeproj; sourceTree = SOURCE_ROOT; };
+		215B14EB2E004A1100DD5C3F /* StopwatchOnMac.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchOnMac.swift; sourceTree = "<group>"; };
+		215B14F12E00558200DD5C3F /* StopwatchWindowSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchWindowSupport.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		215B14D62E0049BB00DD5C3F /* StopwatchOnMac */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = StopwatchOnMac;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		215B14D12E0049BB00DD5C3F /* Frameworks */ = {
@@ -32,7 +32,8 @@
 		215B14CA2E0049BB00DD5C3F = {
 			isa = PBXGroup;
 			children = (
-				215B14D62E0049BB00DD5C3F /* StopwatchOnMac */,
+				215B14E82E004A0B00DD5C3F /* StopwatchOnMac.xcodeproj */,
+				215B14EC2E004A1100DD5C3F /* StopwatchOnMac */,
 				215B14D52E0049BB00DD5C3F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +44,15 @@
 				215B14D42E0049BB00DD5C3F /* StopwatchOnMac.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		215B14EC2E004A1100DD5C3F /* StopwatchOnMac */ = {
+			isa = PBXGroup;
+			children = (
+				215B14EB2E004A1100DD5C3F /* StopwatchOnMac.swift */,
+				215B14F12E00558200DD5C3F /* StopwatchWindowSupport.swift */,
+			);
+			path = StopwatchOnMac;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -70,9 +80,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				215B14D62E0049BB00DD5C3F /* StopwatchOnMac */,
 			);
 			name = StopwatchOnMac;
 			packageProductDependencies = (
@@ -130,6 +137,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				215B14ED2E004A1100DD5C3F /* StopwatchOnMac.swift in Sources */,
+				215B14F22E00558200DD5C3F /* StopwatchWindowSupport.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
