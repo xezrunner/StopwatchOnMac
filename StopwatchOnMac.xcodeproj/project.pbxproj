@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		215B14ED2E004A1100DD5C3F /* StopwatchOnMac.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B14EB2E004A1100DD5C3F /* StopwatchOnMac.swift */; };
 		215B14F22E00558200DD5C3F /* StopwatchWindowSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B14F12E00558200DD5C3F /* StopwatchWindowSupport.swift */; };
+		215B14F52E005E8500DD5C3F /* StopwatchButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B14F42E005E7C00DD5C3F /* StopwatchButton.swift */; };
+		215B7FB92E00D54900BB5579 /* StopwatchHoverTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B7FB82E00D52100BB5579 /* StopwatchHoverTarget.swift */; };
+		2183FE042E00607D001C1D9D /* StopwatchDynamicCursor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2183FE032E006072001C1D9D /* StopwatchDynamicCursor.swift */; };
+		21D332A72E00625E00E8A041 /* StopwatchFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D332A62E00625700E8A041 /* StopwatchFont.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -16,6 +20,10 @@
 		215B14E82E004A0B00DD5C3F /* StopwatchOnMac.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = StopwatchOnMac.xcodeproj; sourceTree = SOURCE_ROOT; };
 		215B14EB2E004A1100DD5C3F /* StopwatchOnMac.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchOnMac.swift; sourceTree = "<group>"; };
 		215B14F12E00558200DD5C3F /* StopwatchWindowSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchWindowSupport.swift; sourceTree = "<group>"; };
+		215B14F42E005E7C00DD5C3F /* StopwatchButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchButton.swift; sourceTree = "<group>"; };
+		215B7FB82E00D52100BB5579 /* StopwatchHoverTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchHoverTarget.swift; sourceTree = "<group>"; };
+		2183FE032E006072001C1D9D /* StopwatchDynamicCursor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchDynamicCursor.swift; sourceTree = "<group>"; };
+		21D332A62E00625700E8A041 /* StopwatchFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchFont.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,10 +57,35 @@
 		215B14EC2E004A1100DD5C3F /* StopwatchOnMac */ = {
 			isa = PBXGroup;
 			children = (
+				2183FE022E006069001C1D9D /* Behaviors */,
+				215B14F62E005E8900DD5C3F /* Controls */,
 				215B14EB2E004A1100DD5C3F /* StopwatchOnMac.swift */,
 				215B14F12E00558200DD5C3F /* StopwatchWindowSupport.swift */,
+				21D332A62E00625700E8A041 /* StopwatchFont.swift */,
 			);
 			path = StopwatchOnMac;
+			sourceTree = "<group>";
+		};
+		215B14F62E005E8900DD5C3F /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				215B14F42E005E7C00DD5C3F /* StopwatchButton.swift */,
+			);
+			path = Controls;
+			sourceTree = "<group>";
+		};
+		2183FDFF2E005F29001C1D9D /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2183FE022E006069001C1D9D /* Behaviors */ = {
+			isa = PBXGroup;
+			children = (
+				215B7FB82E00D52100BB5579 /* StopwatchHoverTarget.swift */,
+				2183FE032E006072001C1D9D /* StopwatchDynamicCursor.swift */,
+			);
+			path = Behaviors;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -115,6 +148,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 215B14D52E0049BB00DD5C3F /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 2183FDFF2E005F29001C1D9D /* Products */;
+					ProjectRef = 215B14E82E004A0B00DD5C3F /* StopwatchOnMac.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				215B14D32E0049BB00DD5C3F /* StopwatchOnMac */,
@@ -138,7 +177,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				215B14ED2E004A1100DD5C3F /* StopwatchOnMac.swift in Sources */,
+				215B7FB92E00D54900BB5579 /* StopwatchHoverTarget.swift in Sources */,
+				2183FE042E00607D001C1D9D /* StopwatchDynamicCursor.swift in Sources */,
 				215B14F22E00558200DD5C3F /* StopwatchWindowSupport.swift in Sources */,
+				215B14F52E005E8500DD5C3F /* StopwatchButton.swift in Sources */,
+				21D332A72E00625E00E8A041 /* StopwatchFont.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

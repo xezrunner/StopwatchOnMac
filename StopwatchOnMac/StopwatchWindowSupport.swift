@@ -13,9 +13,10 @@ public struct StopwatchWindow<Content: View>: Scene {
     public var body: some Scene {
         WindowGroup(id: id) {
             content
-                .background { SWWindowCustomization() }
+                .background { SWWindowCustomization() } // Window customizations
+                ._StopwatchStyling()
         }
-        
+        .windowStyle(.hiddenTitleBar)
     }
 }
 
@@ -23,7 +24,12 @@ private struct StopwatchWindowSupport {
     public static func SWCustomizeWindow(window: NSWindow?) {
         guard let window = window else { Log("no window, ignoring"); return }
         
-        Log("window: \(window.debugDescription)")
+        Log("customizing window: \(window.debugDescription)")
+        
+        window.isOpaque = false
+        window.backgroundColor = .clear
+        
+        window.hasShadow = false
     }
 }
 
