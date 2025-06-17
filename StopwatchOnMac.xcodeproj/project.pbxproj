@@ -11,8 +11,11 @@
 		215B14F22E00558200DD5C3F /* StopwatchWindowSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B14F12E00558200DD5C3F /* StopwatchWindowSupport.swift */; };
 		215B14F52E005E8500DD5C3F /* StopwatchButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B14F42E005E7C00DD5C3F /* StopwatchButton.swift */; };
 		215B7FB92E00D54900BB5579 /* StopwatchHoverTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B7FB82E00D52100BB5579 /* StopwatchHoverTarget.swift */; };
+		217DB6312E00FDCE0013FBEB /* SWTabViewStrip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217DB6302E00FDCE0013FBEB /* SWTabViewStrip.swift */; };
+		217DB6332E00FDE50013FBEB /* StopwatchTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217DB6322E00FDE50013FBEB /* StopwatchTab.swift */; };
 		2183FE042E00607D001C1D9D /* StopwatchAdaptiveCursor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2183FE032E006072001C1D9D /* StopwatchAdaptiveCursor.swift */; };
 		21B7A02C2E00EC6E006FEB2B /* StopwatchAnimationLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B7A02B2E00EC6A006FEB2B /* StopwatchAnimationLibrary.swift */; };
+		21B7A02E2E00ED0A006FEB2B /* StopwatchTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B7A02D2E00ED08006FEB2B /* StopwatchTabView.swift */; };
 		21D332A72E00625E00E8A041 /* StopwatchFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D332A62E00625700E8A041 /* StopwatchFont.swift */; };
 /* End PBXBuildFile section */
 
@@ -23,8 +26,11 @@
 		215B14F12E00558200DD5C3F /* StopwatchWindowSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchWindowSupport.swift; sourceTree = "<group>"; };
 		215B14F42E005E7C00DD5C3F /* StopwatchButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchButton.swift; sourceTree = "<group>"; };
 		215B7FB82E00D52100BB5579 /* StopwatchHoverTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchHoverTarget.swift; sourceTree = "<group>"; };
+		217DB6302E00FDCE0013FBEB /* SWTabViewStrip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWTabViewStrip.swift; sourceTree = "<group>"; };
+		217DB6322E00FDE50013FBEB /* StopwatchTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchTab.swift; sourceTree = "<group>"; };
 		2183FE032E006072001C1D9D /* StopwatchAdaptiveCursor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchAdaptiveCursor.swift; sourceTree = "<group>"; };
 		21B7A02B2E00EC6A006FEB2B /* StopwatchAnimationLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchAnimationLibrary.swift; sourceTree = "<group>"; };
+		21B7A02D2E00ED08006FEB2B /* StopwatchTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchTabView.swift; sourceTree = "<group>"; };
 		21D332A62E00625700E8A041 /* StopwatchFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchFont.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,9 +76,20 @@
 		215B14F62E005E8900DD5C3F /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				217DB62F2E00FDBF0013FBEB /* StopwatchTabView */,
 				215B14F42E005E7C00DD5C3F /* StopwatchButton.swift */,
 			);
 			path = Controls;
+			sourceTree = "<group>";
+		};
+		217DB62F2E00FDBF0013FBEB /* StopwatchTabView */ = {
+			isa = PBXGroup;
+			children = (
+				217DB6322E00FDE50013FBEB /* StopwatchTab.swift */,
+				21B7A02D2E00ED08006FEB2B /* StopwatchTabView.swift */,
+				217DB6302E00FDCE0013FBEB /* SWTabViewStrip.swift */,
+			);
+			path = StopwatchTabView;
 			sourceTree = "<group>";
 		};
 		2183FDFF2E005F29001C1D9D /* Products */ = {
@@ -187,8 +204,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21B7A02E2E00ED0A006FEB2B /* StopwatchTabView.swift in Sources */,
+				217DB6332E00FDE50013FBEB /* StopwatchTab.swift in Sources */,
 				21B7A02C2E00EC6E006FEB2B /* StopwatchAnimationLibrary.swift in Sources */,
 				215B14ED2E004A1100DD5C3F /* StopwatchOnMac.swift in Sources */,
+				217DB6312E00FDCE0013FBEB /* SWTabViewStrip.swift in Sources */,
 				215B7FB92E00D54900BB5579 /* StopwatchHoverTarget.swift in Sources */,
 				2183FE042E00607D001C1D9D /* StopwatchAdaptiveCursor.swift in Sources */,
 				215B14F22E00558200DD5C3F /* StopwatchWindowSupport.swift in Sources */,

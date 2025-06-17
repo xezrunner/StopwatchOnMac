@@ -45,7 +45,6 @@ internal struct SWHoverTargetViewModifier: ViewModifier {
             })
             .onHover { hovering in
                 withAnimation(SWAnimationLibrary.buttonPressAnimation) { isHovering = hovering }
-                hovering ? NSCursor.hide() : NSCursor.unhide()
             }
             // FIXME: cursor position doesn't update during long press!
             // This hasn't worked in XRPrototype either.

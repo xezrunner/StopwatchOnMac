@@ -27,7 +27,7 @@ struct StopwatchButtonStyle: ButtonStyle {
             .clipShape(.capsule)
             .scaleEffect(isPressed ? styleConfiguration.pressedScale : 1.0)
         
-            .stopwatchWantsAdaptiveCursor()
+            .stopwatchWantsAdaptiveCursor(false)
         
             .onChange(of: configuration.isPressed) { _, newValue in
                 withAnimation(SWAnimationLibrary.buttonPressAnimation) { isPressed = newValue }
