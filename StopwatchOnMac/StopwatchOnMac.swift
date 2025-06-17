@@ -22,3 +22,6 @@ extension View {
 
 internal enum ButtonInteractionState { case idle, hovering, pressed }
 
+internal struct SWAnimationLibrary {
+    static let buttonPressAnimation = Animation.easeOut(duration: 0.2) // ported from XRPrototype
+}

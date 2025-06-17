@@ -25,9 +25,11 @@ struct StopwatchButtonStyle: ButtonStyle {
             .stopwatchHoverTarget(isPressed: $isPressed)
         
             .clipShape(.capsule)
-            .scaleEffect(configuration.isPressed ? styleConfiguration.pressedScale : 1.0)
+            .scaleEffect(isPressed ? styleConfiguration.pressedScale : 1.0)
         
-            .onChange(of: configuration.isPressed) { _, newValue in isPressed = newValue }
+            .onChange(of: configuration.isPressed) { _, newValue in
+                withAnimation(SWAnimationLibrary.buttonPressAnimation) { isPressed = newValue }
+            }
     }
 }
 
