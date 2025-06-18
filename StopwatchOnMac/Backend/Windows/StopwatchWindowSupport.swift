@@ -39,11 +39,11 @@ private struct StopwatchWindowSupport {
 }
 
 internal class _SWGetWindowHelperNSView: NSView {
-    var onWindowAccessed: (NSWindow?) -> Void
+    var onWindowAccessed: ((NSWindow?) -> Void)? = nil
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    init(onWindowAccessed: @escaping (NSWindow?) -> Void) {
+    init(onWindowAccessed: ((NSWindow?) -> Void)?) {
         self.onWindowAccessed = onWindowAccessed
         super.init(frame: .zero)
     }
@@ -54,12 +54,12 @@ internal class _SWGetWindowHelperNSView: NSView {
         print("SWWindowCustomizationHelperNSView: viewDidMoveToWindow()!")
         print("  - \(self.window.debugDescription)")
         
-        onWindowAccessed(self.window)
+        onWindowAccessed?(self.window)
     }
 }
 
 internal struct SWGetWindow: NSViewRepresentable {
-    var onWindowAccessed: ((NSWindow?) -> Void)
+    var onWindowAccessed: ((NSWindow?) -> Void)? = nil
     
     func makeNSView(context: Context) -> _SWGetWindowHelperNSView {
         _SWGetWindowHelperNSView(onWindowAccessed: onWindowAccessed)

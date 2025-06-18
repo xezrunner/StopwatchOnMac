@@ -2,8 +2,27 @@
 
 import SwiftUI
 
+private struct StopwatchButtonTintKey: EnvironmentKey {
+    static let defaultValue: Color? = nil
+}
+
+extension EnvironmentValues {
+    var stopwatchButtonTint: Color? {
+        get { self[StopwatchButtonTintKey.self] }
+        set { self[StopwatchButtonTintKey.self] = newValue }
+    }
+}
+
+extension View {
+    func stopwatchButtonTint(_ color: Color) -> some View {
+        environment(\.stopwatchButtonTint, Color(color))
+    }
+}
+
+
 struct StopwatchButtonStyle: ButtonStyle {
-    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.colorScheme)         private var colorScheme
+    @Environment(\.stopwatchButtonTint) private var buttonTint
     
     @State var isHovering: Bool = false
     @State var isPressed:  Bool = false
@@ -20,7 +39,7 @@ struct StopwatchButtonStyle: ButtonStyle {
             .padding(.vertical,   styleConfiguration.padding.vertical)
         
             .fontWeight(.medium)
-            .background(.primary.opacity(styleConfiguration.shapeIdleOpacity))
+            .background((buttonTint ?? .primary).opacity(styleConfiguration.shapeIdleOpacity))
 
             .stopwatchHoverTarget(isPressed: $isPressed)
         
@@ -69,3 +88,4 @@ extension StopwatchButtonStyleConfiguration {
         shapePressedOpacity: 0.3,
     )
 }
+
