@@ -9,15 +9,32 @@ internal struct SWTabViewStrip<Tab: StopwatchTab>: View {
     
     @Binding public var selectedTab: Tab
     
-    var isTabStripExpanded: Bool
+    @Binding var isTabStripExpanded: Bool
+    var hoverSeconds: Double = 0.6
+    @State private var hoverExpandTask: DispatchWorkItem? = nil
+    
+    var expandAnimation: Animation { !isTabStripExpanded ? .smooth : .linear(duration: 0.25) }
     
     var body: some View {
         containerView
             .padding(12)
             .background {
                 RoundedRectangle(cornerRadius: 32, style: .continuous)
-                    .fill(Color.gray)
+                    .fill(Material.ultraThin)
             }
+        
+            .onHover { hover in
+                if hover {
+                    let task = DispatchWorkItem { isTabStripExpanded = true }
+                    hoverExpandTask = task
+                    DispatchQueue.main.asyncAfter(deadline: .now() + hoverSeconds, execute: task)
+                } else {
+                    hoverExpandTask?.cancel()
+                    isTabStripExpanded = false
+                }
+            }
+        
+            .animation(expandAnimation, value: isTabStripExpanded)
     }
     
     var containerView: some View {

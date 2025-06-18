@@ -2,8 +2,6 @@
 
 import SwiftUI
 
-
-
 public struct StopwatchTabView<Tab: StopwatchTab>: View {
     private let allTabs: [Tab]
     
@@ -24,24 +22,18 @@ public struct StopwatchTabView<Tab: StopwatchTab>: View {
         _externalSelection = tabSelection
     }
     
-    @State var isExpanded: Bool = true
-    var expandAnimation: Animation { !isExpanded ? .smooth : .linear(duration: 0.25) }
+    @State var isExpanded: Bool = false
     
     public var body: some View {
-        VStack {
-            Button("Toggle expanded") {
-                withAnimation(expandAnimation) { isExpanded = !isExpanded }
+        TabView(selection: _selectionBinding) {
+            ForEach(allTabs) { tab in
+                tab.view()
             }
-            
-            TabView(selection: _selectionBinding) {
-                ForEach(allTabs) { tab in
-                    tab.view()
-                }
-            }
-            // This is odd, but it does hide just the tab bar. Hiding .windowToolbar would also hide the window controls / toolbar!
-            .toolbar(.hidden, for: .automatic)
-            
-            SWTabViewStrip(allTabs: allTabs, selectedTab: _selectionBinding, isTabStripExpanded: isExpanded)
+        }
+        // This is odd, but it does hide just the tab bar. Hiding .windowToolbar would also hide the window controls / toolbar!
+        .toolbar(.hidden, for: .automatic)
+        .stopwatchAccessoryWindow {
+            SWTabViewStrip(allTabs: allTabs, selectedTab: _selectionBinding, isTabStripExpanded: $isExpanded)
         }
     }
 }
