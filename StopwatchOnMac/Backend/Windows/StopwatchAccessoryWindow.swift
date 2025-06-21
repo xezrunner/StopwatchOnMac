@@ -22,7 +22,7 @@ fileprivate class WindowTransformObserver {
 
 internal class SWAccessoryWindow<WindowContent: View>: NSWindow {
     private var _parentWindow: NSWindow
-    private var resizeObserver: WindowTransformObserver?
+    private var transformObserver: WindowTransformObserver?
     
     private var offset: NSPoint
     
@@ -49,7 +49,7 @@ internal class SWAccessoryWindow<WindowContent: View>: NSWindow {
         self.setContentSize(hostingView.fittingSize)
         
         // The resize handler should be called on startup automatically. If not, manually perform updateOrigin() here!
-        resizeObserver = WindowTransformObserver(window: parentWindow, handler: updateOrigin)
+        transformObserver = WindowTransformObserver(window: parentWindow, handler: updateOrigin)
     }
     
     var isOffScreen: Bool = false
@@ -90,7 +90,7 @@ internal class SWAccessoryWindow<WindowContent: View>: NSWindow {
     }
     
     deinit {
-        if let observer = resizeObserver {
+        if let observer = transformObserver {
             NotificationCenter.default.removeObserver(observer)
         }
     }
