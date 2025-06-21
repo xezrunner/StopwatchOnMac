@@ -53,9 +53,9 @@ internal class SWAccessoryWindow<WindowContent: View>: NSWindow {
     }
     
     var isOffScreen: Bool = false
-    var _offScreenTargetAnimFrame: NSRect = .zero
     let windowSpacing: CGFloat = 10
     
+    // TODO: support different alignments (leading, trailing, top/bottom)
     fileprivate func updateOrigin(transformType: WindowTransformObserver.WindowTransformType) {
         let parentFrame = _parentWindow.frame
         let contentSize = self.contentView?.fittingSize ?? .zero
