@@ -23,6 +23,9 @@ internal struct SWTabViewStrip<Tab: StopwatchTab>: View {
                     .fill(Material.ultraThin)
             }
         
+            // Prevent clipping when part of an accessory window and unhovering:
+            .frame(maxWidth: .infinity, alignment: .leading)
+        
             .onHover { hover in
                 if hover {
                     let task = DispatchWorkItem { isTabStripExpanded = true }
