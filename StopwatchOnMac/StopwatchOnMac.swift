@@ -11,6 +11,8 @@ internal func Log(_ format: String, _ functionName: String = #function, _ args: 
 extension View {
     public func _StopwatchStyling() -> some View {
         self
+            .preferredColorScheme(.dark) // TODO: we don't necessarily want to force dark mode, but visionOS does seem more like dark mode
+        
             .containerBackground(.thinMaterial, for: .window)
         
             .buttonStyle(StopwatchButtonStyle())
