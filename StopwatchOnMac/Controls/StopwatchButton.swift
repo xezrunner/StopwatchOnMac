@@ -97,7 +97,7 @@ struct StopwatchButtonStyleConfiguration {
         }
     }
     
-    var padding: (horizontal: CGFloat, vertical: CGFloat) = (18.0, 8.0)
+    var padding: (horizontal: CGFloat, vertical: CGFloat) = (18.0, 10.0)
     var pressedScale: CGFloat = 0.95
 }
 
