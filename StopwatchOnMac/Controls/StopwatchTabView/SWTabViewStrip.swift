@@ -25,9 +25,6 @@ internal struct SWTabViewStrip<Tab: StopwatchTab>: View {
                     .fill(Material.ultraThin)
             }
         
-            // Prevent clipping when part of an accessory window and unhovering:
-            .frame(maxWidth: .infinity, alignment: .leading)
-        
             .onHover { hover in
                 if hover {
                     let task = DispatchWorkItem { isTabStripExpanded = true }
@@ -38,6 +35,9 @@ internal struct SWTabViewStrip<Tab: StopwatchTab>: View {
                     isTabStripExpanded = false
                 }
             }
+        
+            // Prevent clipping when part of an accessory window and unhovering:
+            .frame(maxWidth: .infinity, alignment: .leading)
         
             .animation(expandAnimation, value: isTabStripExpanded)
     }
@@ -51,9 +51,7 @@ internal struct SWTabViewStrip<Tab: StopwatchTab>: View {
     
     var tabControlsView: some View {
         ForEach(allTabs) { tab in
-            tabButton(tab: tab) {
-                selectedTab = tab
-            }
+            tabButton(tab: tab) { selectedTab = tab }
         }
     }
     
@@ -66,25 +64,17 @@ internal struct SWTabViewStrip<Tab: StopwatchTab>: View {
     func tabButton(tab: Tab, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Label(tab.rawValue, systemImage: tab.icon)
-                .labelStyle(SWTabViewStripTabButtonLabelStyle())
-            // FIXME: refactor?
-//            HStack {
-//                Image(systemName: tab.icon)
-//                    .frame(width: 24, height: 24)
-//                    .aspectRatio(contentMode: .fit)
-//                
-//                Text(tab.rawValue)
-//                    .fixedSize(horizontal: true, vertical: false)
-//                    .frame(maxWidth: .infinity, alignment: .leading)
-//            }
-            .frame(minWidth: !isTabStripExpanded ? nil : 128, maxWidth: !isTabStripExpanded ? 24 : nil, alignment: .leading)
-            .clipped()
+                .labelStyle(SWTabViewStripTabButtonLabelStyle(isTabStripExpanded: $isTabStripExpanded))
+                .frame(minWidth: !isTabStripExpanded ? nil : 128, maxWidth: !isTabStripExpanded ? 24 : nil, alignment: .leading)
+                .clipped()
         }
         .stopwatchButtonTint(tab == selectedTab ? .primary : .clear)
         .stopwatchButtonStyleConfiguration(tabViewStripButtonStyleConfiguration)
     }
 
     private struct SWTabViewStripTabButtonLabelStyle: LabelStyle {
+        @Binding var isTabStripExpanded: Bool
+        
         func makeBody(configuration: Configuration) -> some View {
             HStack {
                 configuration.icon
@@ -96,6 +86,8 @@ internal struct SWTabViewStrip<Tab: StopwatchTab>: View {
                 configuration.title
                     .fixedSize(horizontal: true, vertical: false)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    // Prevent hit testing when expanded at least once and hovering unexpanded part while in accessory window:
+                    .allowsHitTesting(isTabStripExpanded)
             }
         }
     }

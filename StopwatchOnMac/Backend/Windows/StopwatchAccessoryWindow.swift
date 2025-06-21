@@ -44,6 +44,7 @@ internal class SWAccessoryWindow<WindowContent: View>: NSWindow {
         
         let rootView = content
             ._StopwatchStyling()
+        
         let hostingView = NSHostingView(rootView: rootView)
         self.contentView = hostingView
         self.setContentSize(hostingView.fittingSize)
