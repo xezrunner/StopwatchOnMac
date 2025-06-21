@@ -2,6 +2,8 @@
 import SwiftUI
 
 internal struct SWTabViewStrip<Tab: StopwatchTab>: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     enum Orientation { case horizontal, vertical }
     @State var orientation: Orientation = .vertical
     
@@ -55,19 +57,46 @@ internal struct SWTabViewStrip<Tab: StopwatchTab>: View {
         }
     }
     
+    private var tabViewStripButtonStyleConfiguration: StopwatchButtonStyleConfiguration {
+        var base = StopwatchButtonStyleConfiguration.auto(colorScheme: colorScheme)
+        base.padding = (8, 8)
+        return base
+    }
+    
     func tabButton(tab: Tab, action: @escaping () -> Void) -> some View {
         Button(action: action) {
+            Label(tab.rawValue, systemImage: tab.icon)
+                .labelStyle(SWTabViewStripTabButtonLabelStyle())
+            // FIXME: refactor?
+//            HStack {
+//                Image(systemName: tab.icon)
+//                    .frame(width: 24, height: 24)
+//                    .aspectRatio(contentMode: .fit)
+//                
+//                Text(tab.rawValue)
+//                    .fixedSize(horizontal: true, vertical: false)
+//                    .frame(maxWidth: .infinity, alignment: .leading)
+//            }
+            .frame(minWidth: !isTabStripExpanded ? nil : 128, maxWidth: !isTabStripExpanded ? 24 : nil, alignment: .leading)
+            .clipped()
+        }
+        .stopwatchButtonTint(tab == selectedTab ? .primary : .clear)
+        .stopwatchButtonStyleConfiguration(tabViewStripButtonStyleConfiguration)
+    }
+
+    private struct SWTabViewStripTabButtonLabelStyle: LabelStyle {
+        func makeBody(configuration: Configuration) -> some View {
             HStack {
-                Image(systemName: tab.icon)
+                configuration.icon
                     .frame(width: 24, height: 24)
                     .aspectRatio(contentMode: .fit)
+                    .font(.system(size: 17)) // TODO: tweak/verify!
                 
-                Text(tab.rawValue)
+                // TODO: is this going to cause trouble elsewhere? I brought this over from tab strip buttons.
+                configuration.title
                     .fixedSize(horizontal: true, vertical: false)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(minWidth: !isTabStripExpanded ? nil : 128, maxWidth: !isTabStripExpanded ? 24 : nil, alignment: .leading)
-            .clipped()
         }
     }
 }

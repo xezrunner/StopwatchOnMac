@@ -6,10 +6,19 @@ private struct StopwatchButtonTintKey: EnvironmentKey {
     static let defaultValue: Color? = nil
 }
 
+private struct StopwatchButtonStyleConfigurationKey: EnvironmentKey {
+    static let defaultValue: StopwatchButtonStyleConfiguration? = nil
+}
+
 extension EnvironmentValues {
     var stopwatchButtonTint: Color? {
         get { self[StopwatchButtonTintKey.self] }
         set { self[StopwatchButtonTintKey.self] = newValue }
+    }
+    
+    var stopwatchButtonStyleConfiguration: StopwatchButtonStyleConfiguration? {
+        get { self[StopwatchButtonStyleConfigurationKey.self] }
+        set { self[StopwatchButtonStyleConfigurationKey.self] = newValue }
     }
 }
 
@@ -17,12 +26,18 @@ extension View {
     func stopwatchButtonTint(_ color: Color) -> some View {
         environment(\.stopwatchButtonTint, Color(color))
     }
+    
+    func stopwatchButtonStyleConfiguration(_ configuration: StopwatchButtonStyleConfiguration) -> some View {
+        environment(\.stopwatchButtonStyleConfiguration, configuration)
+    }
 }
 
 
 struct StopwatchButtonStyle: ButtonStyle {
     @Environment(\.colorScheme)         private var colorScheme
-    @Environment(\.stopwatchButtonTint) private var buttonTint
+    
+    @Environment(\.stopwatchButtonTint)               private var buttonTint
+    @Environment(\.stopwatchButtonStyleConfiguration) private var styleConfiguration
     
     @State var isHovering: Bool = false
     @State var isPressed:  Bool = false
@@ -32,7 +47,7 @@ struct StopwatchButtonStyle: ButtonStyle {
     }
     
     func makeBody(configuration: Configuration) -> some View {
-        let styleConfiguration: StopwatchButtonStyleConfiguration = .auto(colorScheme: colorScheme)
+        let styleConfiguration: StopwatchButtonStyleConfiguration = styleConfiguration ?? .auto(colorScheme: colorScheme)
         
         configuration.label
             .padding(.horizontal, styleConfiguration.padding.horizontal)
@@ -55,6 +70,8 @@ struct StopwatchButtonStyle: ButtonStyle {
 }
 
 struct StopwatchButtonStyleConfiguration {
+    @Environment(\.colorScheme) static var colorScheme
+    
     var shapeIdleOpacity:    CGFloat
     var shapeHoverOpacity:   CGFloat
     var shapePressedOpacity: CGFloat
