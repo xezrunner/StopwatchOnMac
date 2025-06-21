@@ -50,6 +50,8 @@ struct StopwatchButtonStyle: ButtonStyle {
         let styleConfiguration: StopwatchButtonStyleConfiguration = styleConfiguration ?? .auto(colorScheme: colorScheme)
         
         configuration.label
+            .labelStyle(StopwatchButtonLabelStyle())
+        
             .padding(.horizontal, styleConfiguration.padding.horizontal)
             .padding(.vertical,   styleConfiguration.padding.vertical)
         
@@ -66,6 +68,17 @@ struct StopwatchButtonStyle: ButtonStyle {
             .onChange(of: configuration.isPressed) { _, newValue in
                 withAnimation(SWAnimationLibrary.buttonPressAnimation) { isPressed = newValue }
             }
+    }
+}
+
+private struct StopwatchButtonLabelStyle: LabelStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack {
+            configuration.icon
+                .font(.system(size: 17))
+            
+            configuration.title
+        }
     }
 }
 
