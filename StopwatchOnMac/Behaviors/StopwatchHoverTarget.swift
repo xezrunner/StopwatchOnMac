@@ -17,7 +17,7 @@ internal struct SWHoverTargetViewModifier: ViewModifier {
             .fill(
                 RadialGradient(
                     stops: [
-                        Gradient.Stop(color: .white.opacity(!isPressed ? (!isHovering ? 0.0 : 0.3) : 0.5), location: 0),
+                        Gradient.Stop(color: .primary.opacity(!isPressed ? (!isHovering ? 0.0 : 0.3) : 0.5), location: 0),
                         Gradient.Stop(color: .clear, location: 1)
                     ],
                     center: UnitPoint(x: localMousePoint.x / currentSize.width, y: localMousePoint.y / currentSize.height),
