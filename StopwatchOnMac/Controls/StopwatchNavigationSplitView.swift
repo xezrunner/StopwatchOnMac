@@ -69,7 +69,10 @@ public struct StopwatchNavigationLink<Destination: View>: View {
     }
     
     public var body: some View {
-        Button("StopwatchNavigationLink") { observable.view = destination }
-            .buttonStyle(StopwatchButtonStyle(maxWidth: .infinity))
+        Button { observable.view = destination } label: {
+            Label("NavigationLink", systemImage: "gear")
+        }
+            .stopwatchButtonStyleConfiguration(.sidebar)
+            .stopwatchButtonAlignment(.leading)
     }
 }

@@ -56,8 +56,10 @@ internal struct SWTabViewStrip<Tab: StopwatchTab>: View {
     }
     
     private var tabViewStripButtonStyleConfiguration: StopwatchButtonStyleConfiguration {
-        var base = StopwatchButtonStyleConfiguration.auto(colorScheme: colorScheme)
+        var base = StopwatchButtonStyleConfiguration.default
+        
         base.padding = (8, 8)
+        
         return base
     }
     
