@@ -33,24 +33,28 @@ extension View {
 }
 
 
-struct StopwatchButtonStyle: ButtonStyle {
+public struct StopwatchButtonStyle: ButtonStyle {
     @Environment(\.colorScheme)         private var colorScheme
     
     @Environment(\.stopwatchButtonTint)               private var buttonTint
     @Environment(\.stopwatchButtonStyleConfiguration) private var styleConfiguration
     
-    @State var isHovering: Bool = false
-    @State var isPressed:  Bool = false
+    @State private var isHovering: Bool = false
+    @State private var isPressed:  Bool = false
+    
+    var maxWidth: CGFloat? = nil
     
     private var buttonState: ButtonInteractionState {
         return isPressed ? .pressed : (isHovering ? .hovering : .idle)
     }
     
-    func makeBody(configuration: Configuration) -> some View {
+    public func makeBody(configuration: Configuration) -> some View {
         let styleConfiguration: StopwatchButtonStyleConfiguration = styleConfiguration ?? .auto(colorScheme: colorScheme)
         
         configuration.label
             .labelStyle(StopwatchButtonLabelStyle())
+        
+            .frame(maxWidth: maxWidth)
         
             .padding(.horizontal, styleConfiguration.padding.horizontal)
             .padding(.vertical,   styleConfiguration.padding.vertical)

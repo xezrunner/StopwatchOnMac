@@ -2,32 +2,74 @@
 
 import SwiftUI
 
-// Sidebar: lets users choose a main category or list
-// Content (only in 3‑column): intermediate level—shows items within the sidebar selection
-// Detail: final view—displays full details of the selected content (applies in both 2‑column and 3‑column setups)
 public struct StopwatchNavigationSplitView<Sidebar: View, Content: View, Detail: View>: View {
-    @ViewBuilder public var sidebar: Sidebar
-    @ViewBuilder public var content: Content
-    @ViewBuilder public var detail:  Detail
+    private var inferredDetailInfo  = SWNavigationInferredInfo<Detail>()
+    private var inferredContentInfo = SWNavigationInferredInfo<Content>()
     
-    // Without Content:
-    public init(@ViewBuilder sidebar: @escaping () -> Sidebar, @ViewBuilder detail: @escaping () -> Detail) where Content == EmptyView {
+    @ViewBuilder var sidebar: Sidebar
+    var content: () -> Content
+    var detail:  () -> Detail
+    
+    public init(@ViewBuilder sidebar: @escaping () -> Sidebar,
+                @ViewBuilder content: @escaping () -> Content,
+                @ViewBuilder detail:  @escaping () -> Detail) {
         self.sidebar = sidebar()
-        self.detail = detail()
-        self.content = EmptyView()
+        self.content = content
+        self.detail  = detail
+    }
+    
+    public init(@ViewBuilder sidebar: @escaping () -> Sidebar, @ViewBuilder detail: @escaping () -> Detail) where Content == EmptyView {
+        self.init(sidebar: sidebar, content: { EmptyView() }, detail: detail)
     }
     
     public var body: some View {
         HStack {
-            sidebar
-                .frame(maxWidth: 300) // TODO: sizing
+            SWNavigationSidebarList(content: sidebar)
+                .frame(maxWidth: 300, maxHeight: .infinity)
             
-            content
-                .frame(maxWidth: 300) // TODO: sizing
+            // TODO: Content!
             
-            detail
-                .frame(maxWidth: .infinity)
+            NavigationStack(root: inferredDetailInfo.view ?? detail)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .frame(maxWidth: .infinity)
+        .environment(inferredDetailInfo)
+    }
+}
+
+internal struct SWNavigationSidebarList<Content: View>: View {
+    var content: Content
+    
+    var body: some View {
+        List {
+            content
+                .frame(maxWidth: .infinity)
+                .listRowSeparator(.hidden)
+        }
+        .listStyle(.plain)
+    }
+}
+
+// MARK: - Navigation links
+
+// FIXME: naming!
+@Observable internal class SWNavigationInferredInfo<T: View> {
+    var view: (() -> T)?
+    
+    init(view: (() -> T)? = nil) {
+        self.view = view
+    }
+}
+
+public struct StopwatchNavigationLink<Destination: View>: View {
+    @Environment(SWNavigationInferredInfo<Destination>.self) var observable
+    @ViewBuilder var destination: () -> Destination
+    
+    public init(@ViewBuilder destination: @escaping () -> Destination) {
+        self.destination = destination
+    }
+    
+    public var body: some View {
+        Button("StopwatchNavigationLink") { observable.view = destination }
+            .buttonStyle(StopwatchButtonStyle(maxWidth: .infinity))
     }
 }
