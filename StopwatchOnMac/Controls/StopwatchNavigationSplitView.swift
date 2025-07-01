@@ -3,8 +3,8 @@
 import SwiftUI
 
 public struct StopwatchNavigationSplitView<Sidebar: View, Content: View, Detail: View>: View {
-    private var inferredDetailInfo  = SWNavigationInferredInfo<Detail>()
-    private var inferredContentInfo = SWNavigationInferredInfo<Content>()
+    private var viewLinkageDetail  = SWNavigationViewLinkage<Detail>()
+    private var viewLinkageContent = SWNavigationViewLinkage<Content>()
     
     @ViewBuilder var sidebar: Sidebar
     var content: () -> Content
@@ -29,10 +29,10 @@ public struct StopwatchNavigationSplitView<Sidebar: View, Content: View, Detail:
             
             // TODO: Content!
             
-            NavigationStack(root: inferredDetailInfo.view ?? detail)
+            NavigationStack(root: viewLinkageDetail.view ?? detail)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .environment(inferredDetailInfo)
+        .environment(viewLinkageDetail)
     }
 }
 
@@ -51,8 +51,9 @@ internal struct SWNavigationSidebarList<Content: View>: View {
 
 // MARK: - Navigation links
 
-// FIXME: naming!
-@Observable internal class SWNavigationInferredInfo<T: View> {
+// When using a StopwatchNavigationLink inside a StopwatchNavigation... content part, it will navigate that
+// part to whatever destination you provide in the link.
+@Observable internal class SWNavigationViewLinkage<T: View> {
     var view: (() -> T)?
     
     init(view: (() -> T)? = nil) {
@@ -60,19 +61,35 @@ internal struct SWNavigationSidebarList<Content: View>: View {
     }
 }
 
-public struct StopwatchNavigationLink<Destination: View>: View {
-    @Environment(SWNavigationInferredInfo<Destination>.self) var observable
+public struct StopwatchNavigationLink<Destination: View, Label: View>: View {
+    @Environment(SWNavigationViewLinkage<Destination>.self) var viewLinkage
     @ViewBuilder var destination: () -> Destination
     
-    public init(@ViewBuilder destination: @escaping () -> Destination) {
+    @ViewBuilder var label: () -> Label
+    
+    @_disfavoredOverload // https://forums.swift.org/t/how-to-determine-if-a-passed-argument-is-a-string-literal/41651/6
+    public init<S: StringProtocol>(_ titleKey: S, @ViewBuilder destination: @escaping () -> Destination) where Label == Text {
         self.destination = destination
+        self.label = { Text(titleKey) }
+    }
+    
+    public init(_ titleKey: LocalizedStringKey, @ViewBuilder destination: @escaping () -> Destination) where Label == Text {
+        self.destination = destination
+        self.label = { Text(titleKey) }
+    }
+    
+    public init(@ViewBuilder destination: @escaping () -> Destination, @ViewBuilder label: @escaping () -> Label) {
+        self.destination = destination
+        self.label = label
+    }
+    
+    private func navigate() {
+        viewLinkage.view = destination
     }
     
     public var body: some View {
-        Button { observable.view = destination } label: {
-            Label("NavigationLink", systemImage: "gear")
-        }
-            .stopwatchButtonStyleConfiguration(.sidebar)
-            .stopwatchButtonAlignment(.leading)
+        Button(action: navigate, label: label)
+        .stopwatchButtonStyleConfiguration(.sidebar)
+        .stopwatchButtonAlignment(.leading)
     }
 }
