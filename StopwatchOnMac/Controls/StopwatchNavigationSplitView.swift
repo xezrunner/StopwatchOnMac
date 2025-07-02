@@ -58,11 +58,24 @@ internal struct SWNavigationSidebarList<Content: View>: View {
 }
 
 public struct StopwatchNavigationLink<Destination: View, Label: View>: View {
-    @Environment(SWNavigationViewLinkage<Destination>.self) var viewLinkage
-    @ViewBuilder var destination: () -> Destination
+    @Environment(SWNavigationViewLinkage.self) var viewLinkage
+    var destination: (() -> Destination)?
     
-    @ViewBuilder var label: () -> Label
+    var label: () -> Label
     
+    private func navigate() {
+        guard let destination = destination else { print("StopwatchNavigationLink: no destination, skipping navigation"); return }
+        viewLinkage.view = { AnyView(destination()) }
+    }
+    
+    public var body: some View {
+        Button(action: navigate, label: label)
+        .stopwatchButtonStyleConfiguration(.sidebar)
+        .stopwatchButtonAlignment(.leading)
+    }
+}
+
+extension StopwatchNavigationLink {
     @_disfavoredOverload // https://forums.swift.org/t/how-to-determine-if-a-passed-argument-is-a-string-literal/41651/6
     public init<S: StringProtocol>(_ titleKey: S, @ViewBuilder destination: @escaping () -> Destination) where Label == Text {
         self.destination = destination
@@ -79,13 +92,12 @@ public struct StopwatchNavigationLink<Destination: View, Label: View>: View {
         self.label = label
     }
     
-    private func navigate() {
-        viewLinkage.view = destination
+    public init(_ titleKey: LocalizedStringKey) where Label == Text, Destination == Never {
+        self.label = { Text(titleKey) }
     }
     
-    public var body: some View {
-        Button(action: navigate, label: label)
-        .stopwatchButtonStyleConfiguration(.sidebar)
-        .stopwatchButtonAlignment(.leading)
+    @_disfavoredOverload
+    public init<S: StringProtocol>(_ titleKey: S) where Label == Text, Destination == Never {
+        self.label = { Text(titleKey) }
     }
 }

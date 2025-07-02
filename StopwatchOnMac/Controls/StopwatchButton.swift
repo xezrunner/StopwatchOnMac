@@ -32,7 +32,7 @@ public struct StopwatchButtonStyle: ButtonStyle {
             .fontWeight(.medium)
             .background((buttonTint ?? .primary).opacity(styleConfiguration.shapeIdleOpacity))
 
-            .stopwatchHoverTarget(isPressed: $isPressed)
+            .stopwatchHoverTarget(buttonStyleConfiguration: styleConfiguration, isPressed: $isPressed)
         
             .clipShape(AnyShape(styleConfiguration.shape))
         
@@ -44,7 +44,6 @@ public struct StopwatchButtonStyle: ButtonStyle {
             .onChange(of: configuration.isPressed) { _, newValue in
                  withAnimation(SWAnimationLibrary.buttonPressAnimation) { isPressed = newValue }
             }
-            .animation(SWAnimationLibrary.buttonPressAnimation, value: isPressed)
     }
 }
 
@@ -126,8 +125,12 @@ extension StopwatchButtonStyleConfiguration {
         var styleConfig = transparent
         
         styleConfig.shape = RoundedRectangle(cornerRadius: 10.0, style: .continuous)
+        styleConfig.shapeHoverOpacity = 0.1
+        styleConfig.shapePressedOpacity = 0.25
+        
         styleConfig.maxWidth = .infinity
-        styleConfig.padding = (12.0, 12.0)
+        styleConfig.padding = (12.0, 14.0)
+        styleConfig.pressedScale = 1.0
         
         return styleConfig
     }
@@ -158,15 +161,15 @@ extension EnvironmentValues {
 }
 
 extension View {
-    func stopwatchButtonStyleConfiguration(_ configuration: StopwatchButtonStyleConfiguration) -> some View {
+    public func stopwatchButtonStyleConfiguration(_ configuration: StopwatchButtonStyleConfiguration) -> some View {
         environment(\.stopwatchButtonStyleConfiguration, configuration)
     }
     
-    func stopwatchButtonTint(_ color: Color) -> some View {
+    public func stopwatchButtonTint(_ color: Color) -> some View {
         environment(\.stopwatchButtonTint, Color(color))
     }
     
-    func stopwatchButtonAlignment(_ alignment: Alignment) -> some View {
+    public func stopwatchButtonAlignment(_ alignment: Alignment) -> some View {
         environment(\.stopwatchButtonAlignment, alignment)
     }
 }
