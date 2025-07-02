@@ -3,8 +3,8 @@
 import SwiftUI
 
 public struct StopwatchNavigationSplitView<Sidebar: View, Content: View, Detail: View>: View {
-    private var viewLinkageDetail  = SWNavigationViewLinkage<Detail>()
-    private var viewLinkageContent = SWNavigationViewLinkage<Content>()
+    private var viewLinkageDetail  = SWNavigationViewLinkage()
+    private var viewLinkageContent = SWNavigationViewLinkage()
     
     @ViewBuilder var sidebar: Sidebar
     var content: () -> Content
@@ -29,7 +29,7 @@ public struct StopwatchNavigationSplitView<Sidebar: View, Content: View, Detail:
             
             // TODO: Content!
             
-            NavigationStack(root: viewLinkageDetail.view ?? detail)
+            NavigationStack(root: viewLinkageDetail.view ?? { AnyView(detail()) })
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .environment(viewLinkageDetail)
@@ -40,12 +40,12 @@ internal struct SWNavigationSidebarList<Content: View>: View {
     var content: Content
     
     var body: some View {
-        List {
+        LazyVStack(spacing: 1) {
             content
-                .frame(maxWidth: .infinity)
                 .listRowSeparator(.hidden)
         }
-        .listStyle(.plain)
+        .frame(maxHeight: .infinity, alignment: .top)
+        .padding(10.0)
     }
 }
 
@@ -53,12 +53,8 @@ internal struct SWNavigationSidebarList<Content: View>: View {
 
 // When using a StopwatchNavigationLink inside a StopwatchNavigation... content part, it will navigate that
 // part to whatever destination you provide in the link.
-@Observable internal class SWNavigationViewLinkage<T: View> {
-    var view: (() -> T)?
-    
-    init(view: (() -> T)? = nil) {
-        self.view = view
-    }
+@Observable internal class SWNavigationViewLinkage {
+    var view: (() -> AnyView)?
 }
 
 public struct StopwatchNavigationLink<Destination: View, Label: View>: View {
