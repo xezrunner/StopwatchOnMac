@@ -22,7 +22,7 @@ public struct StopwatchButtonStyle: ButtonStyle {
         let styleConfiguration = (styleConfiguration ?? styleConfigurationOverride) ?? .default
         
         configuration.label
-            .labelStyle(StopwatchButtonLabelStyle())
+            .labelStyle(StopwatchButtonLabelStyle(styleConfiguration: styleConfiguration))
         
             .frame(maxWidth: styleConfiguration.maxWidth, alignment: buttonAlignment)
         
@@ -48,10 +48,12 @@ public struct StopwatchButtonStyle: ButtonStyle {
 }
 
 private struct StopwatchButtonLabelStyle: LabelStyle {
+    var styleConfiguration: StopwatchButtonStyleConfiguration
+    
     func makeBody(configuration: Configuration) -> some View {
         HStack {
             configuration.icon
-                .font(.system(size: 17))
+                .font(.system(size: styleConfiguration.labelIconSize)) // 17
             
             configuration.title
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -85,6 +87,8 @@ public struct StopwatchButtonStyleConfiguration {
     var pressedScale: CGFloat = 0.95
     
     var shape: any Shape = Capsule()
+    
+    var labelIconSize: CGFloat = 17.0 // font size for icon Image
 }
 
 extension StopwatchButtonStyleConfiguration {
@@ -131,6 +135,8 @@ extension StopwatchButtonStyleConfiguration {
         styleConfig.maxWidth = .infinity
         styleConfig.padding = (12.0, 14.0)
         styleConfig.pressedScale = 1.0
+        
+        styleConfig.labelIconSize = 26.0
         
         return styleConfig
     }
