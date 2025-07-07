@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		213E1FB72E158E0D009133C4 /* StopwatchToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213E1FB62E158E09009133C4 /* StopwatchToolbar.swift */; };
 		215B14ED2E004A1100DD5C3F /* StopwatchOnMac.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B14EB2E004A1100DD5C3F /* StopwatchOnMac.swift */; };
 		215B14F22E00558200DD5C3F /* StopwatchWindowSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B14F12E00558200DD5C3F /* StopwatchWindowSupport.swift */; };
 		215B14F52E005E8500DD5C3F /* StopwatchButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B14F42E005E7C00DD5C3F /* StopwatchButton.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		213E1FB62E158E09009133C4 /* StopwatchToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchToolbar.swift; sourceTree = "<group>"; };
 		215B14D42E0049BB00DD5C3F /* StopwatchOnMac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StopwatchOnMac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		215B14E82E004A0B00DD5C3F /* StopwatchOnMac.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = StopwatchOnMac.xcodeproj; sourceTree = SOURCE_ROOT; };
 		215B14EB2E004A1100DD5C3F /* StopwatchOnMac.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchOnMac.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 		215B14F62E005E8900DD5C3F /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				213E1FB62E158E09009133C4 /* StopwatchToolbar.swift */,
 				215B14F42E005E7C00DD5C3F /* StopwatchButton.swift */,
 				217DB62F2E00FDBF0013FBEB /* StopwatchTabView */,
 				21A367C92E072C4800A536DC /* StopwatchNavigationSplitView.swift */,
@@ -224,6 +227,7 @@
 				21B7A02E2E00ED0A006FEB2B /* StopwatchTabView.swift in Sources */,
 				21F8EF682E01018E0079C2C0 /* StopwatchAccessoryWindowSupport.swift in Sources */,
 				217DB6332E00FDE50013FBEB /* StopwatchTab.swift in Sources */,
+				213E1FB72E158E0D009133C4 /* StopwatchToolbar.swift in Sources */,
 				21B7A02C2E00EC6E006FEB2B /* StopwatchAnimationLibrary.swift in Sources */,
 				215B14ED2E004A1100DD5C3F /* StopwatchOnMac.swift in Sources */,
 				217DB6312E00FDCE0013FBEB /* SWTabViewStrip.swift in Sources */,
