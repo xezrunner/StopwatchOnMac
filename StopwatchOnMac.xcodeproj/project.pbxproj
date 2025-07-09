@@ -120,8 +120,6 @@
 			isa = PBXGroup;
 			children = (
 				21F8EF662E0101830079C2C0 /* Windows */,
-				21F8EF672E01018A0079C2C0 /* StopwatchAccessoryWindowSupport.swift */,
-				215B14F12E00558200DD5C3F /* StopwatchWindowSupport.swift */,
 				21B7A02B2E00EC6A006FEB2B /* StopwatchAnimationLibrary.swift */,
 				21D332A62E00625700E8A041 /* StopwatchFont.swift */,
 			);
@@ -132,6 +130,8 @@
 			isa = PBXGroup;
 			children = (
 				21F8EF692E0105340079C2C0 /* StopwatchAccessoryWindow.swift */,
+				21F8EF672E01018A0079C2C0 /* StopwatchAccessoryWindowSupport.swift */,
+				215B14F12E00558200DD5C3F /* StopwatchWindowSupport.swift */,
 			);
 			path = Windows;
 			sourceTree = "<group>";
