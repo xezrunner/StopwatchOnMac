@@ -48,15 +48,25 @@ internal struct StopwatchWindowBorder: View {
     }
 }
 
+func _UnfocusAllViews() {
+    // HACK: https://stackoverflow.com/a/77865301/3589698
+    DispatchQueue.main.async {
+        NSApp.keyWindow?.makeFirstResponder(nil)
+    }
+}
+
 extension View {
     public func _StopwatchStyling(needsBorder: Bool = true) -> some View {
         self
             .preferredColorScheme(.dark) // TODO: we don't necessarily want to force dark mode, but visionOS does seem more like dark mode
+            .tint(.primary)
         
             .containerBackground(.thinMaterial, for: .window)
             .overlay { if needsBorder { StopwatchWindowBorder() } }
         
             .buttonStyle(StopwatchButtonStyle())
+            .textFieldStyle(StopwatchTextFieldStyle())
+        
             .environment(\.font, Font.system(size: 15))
     }
 }
