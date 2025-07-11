@@ -33,8 +33,12 @@ public struct StopwatchToolbarItem<Content: View>: ToolbarContent {
     }
     
     public var body: some ToolbarContent {
-        ToolbarItem(placement: placement, content: content)
-            .sharedBackgroundVisibility(.hidden)
+        let toolbarItem = ToolbarItem(placement: placement, content: content)
+        
+        if #available(macOS 26, *) {
+            toolbarItem
+                .sharedBackgroundVisibility(.hidden)
+        } else { toolbarItem }
     }
 }
 
@@ -49,7 +53,11 @@ public struct StopwatchToolbarItemGroup<Content: View>: ToolbarContent {
     }
     
     public var body: some ToolbarContent {
-        ToolbarItemGroup(placement: placement, content: content)
-            .sharedBackgroundVisibility(.hidden)
+        let toolbarItemGroup = ToolbarItemGroup(placement: placement, content: content)
+        
+        if #available(macOS 26, *) {
+            toolbarItemGroup
+                .sharedBackgroundVisibility(.hidden)
+        } else { toolbarItemGroup }
     }
 }

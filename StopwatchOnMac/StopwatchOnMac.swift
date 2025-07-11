@@ -12,6 +12,11 @@ internal func Log(_ format: String, _ functionName: String = #function, _ args: 
 
 internal enum ButtonInteractionState { case idle, hovering, pressed }
 
+extension View {
+    // https://stackoverflow.com/a/77735876/3589698
+    func backcompat<V: View>(@ViewBuilder _ block: (Self) -> V) -> V { block(self) }
+}
+
 // Styling:
 
 internal struct StopwatchWindowBorder: View {
