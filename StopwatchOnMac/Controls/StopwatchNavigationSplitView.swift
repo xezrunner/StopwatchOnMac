@@ -8,11 +8,30 @@ internal class StopwatchNavigationSelectionStore<Selection: Hashable>: Observabl
     init(selectionBinding: Binding<Selection>? = nil) { self.selection = selectionBinding }
 }
 
+struct StopwatchNavigationSplitViewDetailBackgroundTintEnvironmentKey: EnvironmentKey {
+    static var defaultValue: Color? = .primary.opacity(0.30)
+}
+
+extension EnvironmentValues {
+    var stopwatchNavigationSplitViewDetailBackgroundTint: Color? {
+        get { self[StopwatchNavigationSplitViewDetailBackgroundTintEnvironmentKey.self] }
+        set { self[StopwatchNavigationSplitViewDetailBackgroundTintEnvironmentKey.self] = newValue }
+    }
+}
+
+extension View {
+    func stopwatchNavigationSplitViewDetailBackgroundTint(color: Color) -> some View {
+        self.environment(\.stopwatchNavigationSplitViewDetailBackgroundTint, color)
+    }
+}
+
 public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, Content: View, Detail: View>: View {
     private var viewLinkageDetail  = SWNavigationViewLinkage()
     private var viewLinkageContent = SWNavigationViewLinkage()
     
     @StateObject var selectionStore: StopwatchNavigationSelectionStore<Selection>
+    
+    @Environment(\.stopwatchNavigationSplitViewDetailBackgroundTint) var detailBackgroundTint
     
     @ViewBuilder var sidebar: Sidebar
     var content: () -> Content
@@ -30,7 +49,8 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
     }
     
     public var body: some View {
-        HStack {
+        HStack(spacing: 0) {
+            // TODO: do we want to force this list?
             SWNavigationSidebarList<Sidebar, Selection>(content: sidebar)
                 .frame(maxWidth: 300, maxHeight: .infinity)
                 .environmentObject(selectionStore)
@@ -39,6 +59,11 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
             
             NavigationStack(root: viewLinkageDetail.view ?? { AnyView(detail()) })
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(
+                    detailBackgroundTint?
+                        .ignoresSafeArea()
+                        .blendMode(.softLight)
+                )
         }
         .environment(viewLinkageDetail)
     }
@@ -77,7 +102,7 @@ internal struct SWNavigationSidebarList<Content: View, Selection: Hashable>: Vie
                 .environmentObject(selectionStore)
         }
         .frame(maxHeight: .infinity, alignment: .top)
-        .padding(10.0)
+        .padding(14.0)
     }
 }
 
