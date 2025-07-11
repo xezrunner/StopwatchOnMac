@@ -86,9 +86,9 @@
 		215B14F62E005E8900DD5C3F /* Controls */ = {
 			isa = PBXGroup;
 			children = (
-				216A280B2E21480C0096D312 /* StopwatchTextField.swift */,
 				213E1FB62E158E09009133C4 /* StopwatchToolbar.swift */,
 				215B14F42E005E7C00DD5C3F /* StopwatchButton.swift */,
+				216A280B2E21480C0096D312 /* StopwatchTextField.swift */,
 				217DB62F2E00FDBF0013FBEB /* StopwatchTabView */,
 				21A367C92E072C4800A536DC /* StopwatchNavigationSplitView.swift */,
 			);

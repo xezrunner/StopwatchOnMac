@@ -1,51 +1,60 @@
 // StopwatchOnMac::StopwatchTextField.swift - 11/07/2025
 import SwiftUI
 
-public struct StopwatchTextField<Icon: View, Title: View>: View {
-    @ViewBuilder var icon:  () -> Icon
+public struct StopwatchTextField<Title: View>: View {
+    var icon: Image?
     @ViewBuilder var title: () -> Title
     @Binding var text:  String
     var isClearable:    Bool = false
     
     public var body: some View {
         TextField(text: _text) {
-            Label(title: title, icon: icon)
+            Label(title: title, icon: {})
         }
+        .stopwatchTextFieldIcon(image: icon)
         .stopwatchTextFieldClearable(isClearable ? _text : nil)
     }
 }
 
 extension StopwatchTextField {
-    public init(text: Binding<String>, isClearable: Bool = false, @ViewBuilder title: @escaping () -> Title, @ViewBuilder icon: @escaping () -> Icon) {
+    public init(text: Binding<String>, isClearable: Bool = false, @ViewBuilder title: @escaping () -> Title, icon: Image) {
         self.icon  = icon
         self.title = title
         self._text  = text
         self.isClearable = isClearable
     }
     
-    public init(title: String, iconSystemName: String, isClearable: Bool = false, text: Binding<String>) where Icon == Image, Title == Text {
-        self.icon  = { Image(systemName: iconSystemName) }
+    public init(title: String, iconSystemName: String, isClearable: Bool = false, text: Binding<String>) where Title == Text {
+        self.icon  = Image(systemName: iconSystemName)
         self.title = { Text(title) }
         self._text  = text
         self.isClearable = isClearable
     }
     
-    public init(title: String, isClearable: Bool = false, text: Binding<String>) where Icon == EmptyView, Title == Text {
-        self.icon  = { EmptyView() }
+    public init(title: String, isClearable: Bool = false, text: Binding<String>) where Title == Text {
+        self.icon  = nil
         self.title = { Text(title) }
         self._text  = text
         self.isClearable = isClearable
     }
 }
 
-public struct StopwatchTextFieldStyle: TextFieldStyle {
+public struct StopwatchTextFieldStyle<S: InsettableShape>: TextFieldStyle {
     @Environment(\.stopwatchTextFieldIcon)      var textFieldIcon
     @Environment(\.stopwatchTextFieldClearable) var textFieldClearableBinding
     
     @State      var isFocusable = false
     @FocusState var isFocused
     
-    public init() {}
+    var shape: S
+    
+    public init() where S == RoundedRectangle {
+        self.shape = RoundedRectangle(cornerRadius: 12, style: .continuous)
+    }
+    
+    public init(shape: S) {
+        self.shape = shape
+    }
     
     func focusTextField() {
         isFocusable = true
@@ -72,7 +81,7 @@ public struct StopwatchTextFieldStyle: TextFieldStyle {
                 configuration
                     // FIXME: plain style text field moves up when focused for some reason!
                     .textFieldStyle(.plain)
-                    .padding(.leading, 4)
+                    .padding(.leading, textFieldIcon == nil ? 8 : 2)
                 
                     .focused($isFocused)
                     .focusable(isFocusable)
@@ -96,16 +105,42 @@ public struct StopwatchTextFieldStyle: TextFieldStyle {
                 }
             }
         }
-        .buttonStyle(StopwatchTextFieldRoundedButtonStyle(isTextFieldFocused: _isFocused))
+        .buttonStyle(StopwatchTextFieldButtonStyle(isTextFieldFocused: _isFocused, shape: shape))
     }
 }
 
-private struct StopwatchTextFieldRoundedButtonStyle: ButtonStyle {
+extension TextFieldStyle where Self == StopwatchTextFieldStyle<RoundedRectangle> {
+    public static var stopwatchRegular: StopwatchTextFieldStyle<RoundedRectangle> { StopwatchTextFieldStyle() }
+}
+
+extension TextFieldStyle where Self == StopwatchTextFieldStyle<Capsule> {
+    public static var stopwatchSearch:  StopwatchTextFieldStyle<Capsule> { StopwatchTextFieldStyle(shape: Capsule()) }
+}
+
+extension TextFieldStyle {
+    public static func stopwatch<S: InsettableShape>(shape: S) -> StopwatchTextFieldStyle<S> where Self == StopwatchTextFieldStyle<S> {
+        return StopwatchTextFieldStyle(shape: shape)
+    }
+}
+
+internal struct StopwatchTextFieldButtonStyle<S: InsettableShape>: ButtonStyle {
     @FocusState var isTextFieldFocused
     @State      var isPressed = false
     
+    var shape: S
+    
+    init(isTextFieldFocused: FocusState<Bool>) where S == RoundedRectangle {
+        self._isTextFieldFocused = isTextFieldFocused
+        self.shape = RoundedRectangle(cornerRadius: 12, style: .continuous)
+    }
+    
+    init(isTextFieldFocused: FocusState<Bool>, shape: S) {
+        self._isTextFieldFocused = isTextFieldFocused
+        self.shape = shape
+    }
+    
     func makeBody(configuration: Configuration) -> some View {
-        Capsule()
+        shape
             .fill(.ultraThinMaterial)
             .frame(maxWidth: .infinity, minHeight: 42, alignment: .leading)
             .overlay(border)
@@ -123,7 +158,7 @@ private struct StopwatchTextFieldRoundedButtonStyle: ButtonStyle {
                     .padding(.horizontal, 8)
             }
         
-            .clipShape(.capsule)
+            .clipShape(shape)
         
             .padding(8)
     }
@@ -138,9 +173,9 @@ private struct StopwatchTextFieldRoundedButtonStyle: ButtonStyle {
             .inner(color: .black.opacity(0.05), radius: 2, x: -1, y: 1.5)
         ).blendMode(.plusDarker) // plusDarker here makes the white disappear, while keeping the shadow
         
-        return Capsule()
+        return shape
             .strokeBorder(borderGradient, lineWidth: 1.3)
-            .background(innerShadow, in: .capsule)
+            .background(innerShadow, in: shape)
             .blendMode(.softLight)
     }
 }
@@ -170,7 +205,7 @@ extension View {
         self.environment(\.stopwatchTextFieldIcon, Image(systemName: systemName))
     }
     
-    public func stopwatchTextFieldIcon(image: Image) -> some View {
+    public func stopwatchTextFieldIcon(image: Image?) -> some View {
         self.environment(\.stopwatchTextFieldIcon, image)
     }
     

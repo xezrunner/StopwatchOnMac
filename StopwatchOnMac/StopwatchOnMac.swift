@@ -65,7 +65,7 @@ extension View {
             .overlay { if needsBorder { StopwatchWindowBorder() } }
         
             .buttonStyle(StopwatchButtonStyle())
-            .textFieldStyle(StopwatchTextFieldStyle())
+            .textFieldStyle(.stopwatchRegular)
         
             .environment(\.font, Font.system(size: 15))
     }
