@@ -42,7 +42,7 @@ public struct StopwatchButtonStyle: ButtonStyle {
 //            .stopwatchWantsAdaptiveCursor(false)
         
             .onChange(of: configuration.isPressed) { _, newValue in
-                 withAnimation(SWAnimationLibrary.buttonPressAnimation) { isPressed = newValue }
+                isPressed = newValue
             }
     }
 }
