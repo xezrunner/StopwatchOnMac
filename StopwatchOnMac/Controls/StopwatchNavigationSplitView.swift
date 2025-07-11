@@ -4,8 +4,8 @@ import SwiftUI
 import Combine
 
 internal class StopwatchNavigationSelectionStore<Selection: Hashable>: ObservableObject {
-    @Published var selection: Binding<Selection>?
-    init(selectionBinding: Binding<Selection>? = nil) { self.selection = selectionBinding }
+    @Published var selection: Selection?
+    init(selection: Selection? = nil) { self.selection = selection }
 }
 
 struct StopwatchNavigationSplitViewDetailBackgroundTintEnvironmentKey: EnvironmentKey {
@@ -45,7 +45,7 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
         self.content = content
         self.detail  = detail
         
-        self._selectionStore = StateObject(wrappedValue: StopwatchNavigationSelectionStore(selectionBinding: selection))
+        self._selectionStore = StateObject(wrappedValue: StopwatchNavigationSelectionStore(selection: selection?.wrappedValue))
     }
     
     public var body: some View {
@@ -71,21 +71,21 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
 
 extension StopwatchNavigationSplitView {
     // Without content:
-    #if FEATURE_NAVSPLITVIEW_SELECTION
+//    #if FEATURE_NAVSPLITVIEW_SELECTION
     public init(selection: Binding<Selection>? = nil,
                 @ViewBuilder sidebar: @escaping () -> Sidebar, @ViewBuilder detail: @escaping () -> Detail) where Content == EmptyView {
         self.init(selection: selection, sidebar: sidebar, content: { EmptyView() }, detail: detail)
     }
-    #endif
+//    #endif
     
     // MARK: - Without selection:
     public init(@ViewBuilder sidebar: @escaping () -> Sidebar,
                 @ViewBuilder content: @escaping () -> Content,
-                @ViewBuilder detail:  @escaping () -> Detail) where Selection == Never {
+                @ViewBuilder detail:  @escaping () -> Detail) where Selection == UUID {
         self.init(selection: nil, sidebar: sidebar, content: content, detail: detail)
     }
     
-    public init(@ViewBuilder sidebar: @escaping () -> Sidebar, @ViewBuilder detail: @escaping () -> Detail) where Content == EmptyView, Selection == Never {
+    public init(@ViewBuilder sidebar: @escaping () -> Sidebar, @ViewBuilder detail: @escaping () -> Detail) where Content == EmptyView, Selection == UUID {
         self.init(selection: nil, sidebar: sidebar, content: { EmptyView() }, detail: detail)
     }
 }
@@ -96,7 +96,7 @@ internal struct SWNavigationSidebarList<Content: View, Selection: Hashable>: Vie
     var content: Content
     
     var body: some View {
-        LazyVStack(spacing: 1) {
+        LazyVStack(spacing: 4) {
             content
                 .listRowSeparator(.hidden)
                 .environmentObject(selectionStore)
@@ -123,18 +123,35 @@ public struct StopwatchNavigationLink<Destination: View, Label: View, Value: Has
     var label: () -> Label
     
     var value: Value?
+    // If no value is given, generate a unique ID for each link and use it as selection:
+    @State var _destinationImplicitID: Value?
     
     private func navigate() {
         if let destination = destination {
             viewLinkage.view = { AnyView(destination()) }
         } else { print("StopwatchNavigationLink: no destination, skipping navigation") }
         
-        if let value = value { selectionStore.selection?.wrappedValue = value }
+        if let value = value ?? _destinationImplicitID { selectionStore.selection = value }
+    }
+    
+    var isSelected: Bool {
+        if let selection = selectionStore.selection, let value = value ?? _destinationImplicitID {
+            return selection == value
+        }
+        return false
+    }
+    
+    private var selectedStyleConfiguration: StopwatchButtonStyleConfiguration {
+        var configuration: StopwatchButtonStyleConfiguration = .sidebar
+        
+        configuration.shapeIdleOpacity = 0.1
+        
+        return configuration
     }
     
     public var body: some View {
         Button(action: navigate, label: label)
-            .stopwatchButtonStyleConfiguration(.sidebar)
+            .stopwatchButtonStyleConfiguration(!isSelected ? .sidebar : selectedStyleConfiguration)
             .stopwatchButtonAlignment(.leading)
     }
 }
@@ -146,18 +163,21 @@ extension StopwatchNavigationLink {
     
     // MARK: - Destination-based:
     @_disfavoredOverload // https://forums.swift.org/t/how-to-determine-if-a-passed-argument-is-a-string-literal/41651/6
-    public init<S: StringProtocol>(_ titleKey: S, @ViewBuilder destination: @escaping () -> Destination) where Label == Text, Value == Never {
+    public init<S: StringProtocol>(_ titleKey: S, @ViewBuilder destination: @escaping () -> Destination) where Label == Text, Value == UUID {
         self.destination = destination
+        self._destinationImplicitID = UUID()
         self.label = { Text(titleKey) }
     }
     
-    public init(_ titleKey: LocalizedStringKey, @ViewBuilder destination: @escaping () -> Destination) where Label == Text, Value == Never {
+    public init(_ titleKey: LocalizedStringKey, @ViewBuilder destination: @escaping () -> Destination) where Label == Text, Value == UUID {
         self.destination = destination
+        self._destinationImplicitID = UUID()
         self.label = { Text(titleKey) }
     }
     
-    public init(@ViewBuilder destination: @escaping () -> Destination, @ViewBuilder label: @escaping () -> Label) where Value == Never {
+    public init(@ViewBuilder destination: @escaping () -> Destination, @ViewBuilder label: @escaping () -> Label) where Value == UUID {
         self.destination = destination
+        self._destinationImplicitID = UUID()
         self.label = label
     }
     
@@ -167,7 +187,7 @@ extension StopwatchNavigationLink {
     }
     
     // MARK: - Value-based:
-#if FEATURE_NAVSPLITVIEW_SELECTION
+//#if FEATURE_NAVSPLITVIEW_SELECTION
     @_disfavoredOverload
     public init<S: StringProtocol>(_ titleKey: S, value: Value) where Label == Text, Destination == Never {
         self.value = value
@@ -183,5 +203,5 @@ extension StopwatchNavigationLink {
         self.value = value
         self.label = label
     }
-#endif
+//#endif
 }
