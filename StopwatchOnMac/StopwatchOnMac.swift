@@ -20,6 +20,14 @@ extension View {
 // Styling:
 
 internal struct StopwatchWindowBorder: View {
+    var windowCornerRadius: CGFloat {
+        if #available(macOS 26, *) {
+            return 16.0
+        } else {
+            return 11.0
+        }
+    }
+    
     var body: some View {
         let endRadius = 700.0
         
@@ -30,7 +38,7 @@ internal struct StopwatchWindowBorder: View {
             Gradient.Stop(color: .clear, location: 0),
         ], center: UnitPoint(x: randomX, y: randomY), startRadius: 0, endRadius: endRadius)
         
-        RoundedRectangle(cornerRadius: 16)
+        RoundedRectangle(cornerRadius: windowCornerRadius)
             .strokeBorder(gradient, lineWidth: 0.8)
 //            .strokeBorder(gradient, lineWidth: 240)
             .ignoresSafeArea()
@@ -41,12 +49,12 @@ internal struct StopwatchWindowBorder: View {
 }
 
 extension View {
-    public func _StopwatchStyling() -> some View {
+    public func _StopwatchStyling(needsBorder: Bool = true) -> some View {
         self
             .preferredColorScheme(.dark) // TODO: we don't necessarily want to force dark mode, but visionOS does seem more like dark mode
         
             .containerBackground(.thinMaterial, for: .window)
-            .overlay { StopwatchWindowBorder() }
+            .overlay { if needsBorder { StopwatchWindowBorder() } }
         
             .buttonStyle(StopwatchButtonStyle())
             .environment(\.font, Font.system(size: 15))

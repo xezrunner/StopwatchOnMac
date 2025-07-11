@@ -43,13 +43,15 @@ internal class SWAccessoryWindow<WindowContent: View>: NSWindow {
         self.backgroundColor = .clear
         
         let rootView = content
-            ._StopwatchStyling()
+            ._StopwatchStyling(needsBorder: false)
         
         let hostingView = NSHostingView(rootView: rootView)
         self.contentView = hostingView
         self.setContentSize(hostingView.fittingSize)
         
-        // The resize handler should be called on startup automatically. If not, manually perform updateOrigin() here!
+        // The resize handler gets called on startup in macOS 26 beta automatically.
+        // This doesn't happen on previous macOS releases, so let's call it here manually:
+        updateOrigin(transformType: .resize)
         transformObserver = WindowTransformObserver(window: parentWindow, handler: updateOrigin)
     }
     
@@ -57,6 +59,7 @@ internal class SWAccessoryWindow<WindowContent: View>: NSWindow {
     let windowSpacing: CGFloat = 10
     
     // TODO: support different alignments (leading, trailing, top/bottom)
+    // FIXME: something is weird with alignment on <macOS 26 when animating for the first time!
     fileprivate func updateOrigin(transformType: WindowTransformObserver.WindowTransformType) {
         let parentFrame = _parentWindow.frame
         let contentSize = self.contentView?.fittingSize ?? .zero
