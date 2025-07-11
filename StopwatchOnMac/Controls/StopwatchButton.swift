@@ -24,7 +24,7 @@ public struct StopwatchButtonStyle: ButtonStyle {
         configuration.label
             .labelStyle(StopwatchButtonLabelStyle(styleConfiguration: styleConfiguration))
         
-            .frame(maxWidth: styleConfiguration.maxWidth, alignment: buttonAlignment)
+            .frame(maxWidth: styleConfiguration.maxWidth, maxHeight: styleConfiguration.maxHeight, alignment: buttonAlignment)
         
             .padding(.horizontal, styleConfiguration.padding.horizontal)
             .padding(.vertical,   styleConfiguration.padding.vertical)
@@ -34,6 +34,7 @@ public struct StopwatchButtonStyle: ButtonStyle {
 
             .stopwatchHoverTarget(buttonStyleConfiguration: styleConfiguration, isPressed: $isPressed)
         
+            // FIXME: use shapes correctly!
             .clipShape(AnyShape(styleConfiguration.shape))
         
             .compositingGroup()
@@ -53,7 +54,7 @@ private struct StopwatchButtonLabelStyle: LabelStyle {
     func makeBody(configuration: Configuration) -> some View {
         HStack {
             configuration.icon
-                .font(.system(size: styleConfiguration.labelIconSize)) // 17
+                .font(.system(size: styleConfiguration.labelIconSize, weight: .bold)) // 17
             
             configuration.title
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -82,7 +83,8 @@ public struct StopwatchButtonStyleConfiguration {
         }
     }
     
-    var maxWidth: CGFloat? = nil
+    var maxWidth:  CGFloat? = nil
+    var maxHeight: CGFloat? = nil
     var padding: (horizontal: CGFloat, vertical: CGFloat) = (18.0, 10.0)
     var pressedScale: CGFloat = 0.95
     
@@ -137,6 +139,31 @@ extension StopwatchButtonStyleConfiguration {
         styleConfig.pressedScale = 1.0
         
         styleConfig.labelIconSize = 26.0
+        
+        return styleConfig
+    }
+    
+    public static var circular: StopwatchButtonStyleConfiguration {
+        var styleConfig = `default`
+        
+        // TODO: icon only label from here?
+        styleConfig.shape     = Circle()
+        styleConfig.padding   = (8, 8)
+        styleConfig.maxWidth  = 24
+        styleConfig.maxHeight = 24
+        
+        return styleConfig
+    }
+    
+    public static var circularSmall: StopwatchButtonStyleConfiguration {
+        var styleConfig = `default`
+        
+        // TODO: icon only label from here?
+        styleConfig.shape     = Circle()
+        styleConfig.padding   = (4, 4)
+        styleConfig.maxWidth  = 18
+        styleConfig.maxHeight = 18
+        styleConfig.labelIconSize = 12.0
         
         return styleConfig
     }
