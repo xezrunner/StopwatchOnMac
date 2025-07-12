@@ -247,3 +247,29 @@ extension StopwatchNavigationLink {
     }
 //#endif
 }
+
+extension StopwatchButtonStyleConfiguration {
+    public static var sidebar: StopwatchButtonStyleConfiguration {
+        var styleConfig = transparent
+        
+        styleConfig.shape = RoundedRectangle(cornerRadius: 10.0, style: .continuous)
+        styleConfig.shapeHoverOpacity = 0.1
+        styleConfig.shapePressedOpacity = 0.25
+        
+        styleConfig.maxWidth = .infinity
+        styleConfig.padding = (12.0, 14.0)
+        styleConfig.pressedScale = 1.0
+        
+        styleConfig.labelIconSize = 26.0
+        
+        return styleConfig
+    }
+    
+    public static var navigationLink: StopwatchButtonStyleConfiguration {
+        var styleConfig = sidebar
+        
+        styleConfig.shapeIdleOpacity = 0.1
+
+        return styleConfig
+    }
+}
