@@ -3,33 +3,13 @@
 import SwiftUI
 import Combine
 
-internal class StopwatchNavigationSelectionStore<Selection: Hashable>: ObservableObject {
-    @Published var selection: Selection?
-    init(selection: Selection? = nil) { self.selection = selection }
-}
-
-struct StopwatchNavigationSplitViewDetailBackgroundTintEnvironmentKey: EnvironmentKey {
-    static var defaultValue: Color? = .primary.opacity(0.30)
-}
-
-extension EnvironmentValues {
-    var stopwatchNavigationSplitViewDetailBackgroundTint: Color? {
-        get { self[StopwatchNavigationSplitViewDetailBackgroundTintEnvironmentKey.self] }
-        set { self[StopwatchNavigationSplitViewDetailBackgroundTintEnvironmentKey.self] = newValue }
-    }
-}
-
-extension View {
-    func stopwatchNavigationSplitViewDetailBackgroundTint(color: Color) -> some View {
-        self.environment(\.stopwatchNavigationSplitViewDetailBackgroundTint, color)
-    }
-}
-
 public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, Content: View, Detail: View>: View {
     private var viewLinkageDetail  = SWNavigationViewLinkage()
     private var viewLinkageContent = SWNavigationViewLinkage()
     
     @StateObject var selectionStore: StopwatchNavigationSelectionStore<Selection>
+    
+    @State private var detailTitle: String?
     
     @Environment(\.stopwatchNavigationSplitViewDetailBackgroundTint) var detailBackgroundTint
     
@@ -45,7 +25,7 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
         self.content = content
         self.detail  = detail
         
-        self._selectionStore = StateObject(wrappedValue: StopwatchNavigationSelectionStore(selection: selection?.wrappedValue))
+        self._selectionStore = StateObject(wrappedValue: StopwatchNavigationSelectionStore(initialSelection: selection?.wrappedValue, binding: selection))
     }
     
     public var body: some View {
@@ -64,6 +44,17 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
                         .ignoresSafeArea()
                         .blendMode(.softLight)
                 )
+                .safeAreaInset(edge: .top) {
+                    if let title = detailTitle {
+                        Text(title)
+                            .font(.system(size: 16, weight: .bold))
+                            .padding(.vertical, 24)
+                            .ignoresSafeArea(.all, edges: .top)
+                    }
+                }
+                .onPreferenceChange(StopwatchNavigationTitlePreferenceKey.self) { title in
+                    detailTitle = title
+                }
         }
         .environment(viewLinkageDetail)
     }
@@ -90,6 +81,55 @@ extension StopwatchNavigationSplitView {
     }
 }
 
+// MARK: - Environment keys / preference keys / modifiers:
+
+// MARK: - Preference Key for Title
+struct StopwatchNavigationTitlePreferenceKey: PreferenceKey {
+    static var defaultValue: String? = nil
+    static func reduce(value: inout String?, nextValue: () -> String?) {
+        value = nextValue() ?? value
+    }
+}
+
+struct StopwatchNavigationSplitViewDetailBackgroundTintEnvironmentKey: EnvironmentKey {
+    static var defaultValue: Color? = .primary.opacity(0.30)
+}
+
+extension EnvironmentValues {
+    var stopwatchNavigationSplitViewDetailBackgroundTint: Color? {
+        get { self[StopwatchNavigationSplitViewDetailBackgroundTintEnvironmentKey.self] }
+        set { self[StopwatchNavigationSplitViewDetailBackgroundTintEnvironmentKey.self] = newValue }
+    }
+}
+
+extension View {
+    public func stopwatchNavigationTitle(_ title: String?) -> some View {
+        self.preference(key: StopwatchNavigationTitlePreferenceKey.self, value: title)
+    }
+    
+    public func stopwatchNavigationSplitViewDetailBackgroundTint(color: Color) -> some View {
+        self.environment(\.stopwatchNavigationSplitViewDetailBackgroundTint, color)
+    }
+}
+
+// MARK: - Navigation links:
+
+internal class StopwatchNavigationSelectionStore<Selection: Hashable>: ObservableObject {
+    @Published var selection: Selection? {
+        didSet {
+            if let binding = selectionBinding, let selection = selection {
+                binding.wrappedValue = selection
+            }
+        }
+    }
+    private var selectionBinding: Binding<Selection>?
+    
+    init(initialSelection: Selection? = nil, binding: Binding<Selection>? = nil) {
+        self.selection = initialSelection
+        self.selectionBinding = binding
+    }
+}
+
 internal struct SWNavigationSidebarList<Content: View, Selection: Hashable>: View {
     @EnvironmentObject var selectionStore: StopwatchNavigationSelectionStore<Selection>
     
@@ -105,8 +145,6 @@ internal struct SWNavigationSidebarList<Content: View, Selection: Hashable>: Vie
         .padding(14.0)
     }
 }
-
-// MARK: - Navigation links
 
 // When using a StopwatchNavigationLink inside a StopwatchNavigation... content part, it will navigate that
 // part to whatever destination you provide in the link.
