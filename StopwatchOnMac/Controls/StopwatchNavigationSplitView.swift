@@ -142,7 +142,7 @@ internal struct SWNavigationSidebarList<Content: View, Selection: Hashable>: Vie
                 .environmentObject(selectionStore)
         }
         .frame(maxHeight: .infinity, alignment: .top)
-        .padding(14.0)
+        .padding([.horizontal, .bottom], 14.0)
     }
 }
 
