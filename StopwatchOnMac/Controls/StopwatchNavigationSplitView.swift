@@ -13,7 +13,7 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
     
     @Environment(\.stopwatchNavigationSplitViewDetailBackgroundTint) var detailBackgroundTint
     
-    @ViewBuilder var sidebar: Sidebar
+    var sidebar: () -> Sidebar
     var content: () -> Content
     var detail:  () -> Detail
     
@@ -21,7 +21,7 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
                 @ViewBuilder sidebar: @escaping () -> Sidebar,
                 @ViewBuilder content: @escaping () -> Content,
                 @ViewBuilder detail:  @escaping () -> Detail) {
-        self.sidebar = sidebar()
+        self.sidebar = sidebar
         self.content = content
         self.detail  = detail
         
@@ -31,9 +31,8 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
     public var body: some View {
         HStack(spacing: 0) {
             // TODO: do we want to force this list?
-            SWNavigationSidebarList<Sidebar, Selection>(content: sidebar)
+            SWNavigationSidebarList<Sidebar, Selection>(selectionStore: selectionStore, content: sidebar)
                 .frame(maxWidth: 300, maxHeight: .infinity)
-                .environmentObject(selectionStore)
             
             // TODO: Content!
             
@@ -131,7 +130,12 @@ internal class StopwatchNavigationSelectionStore<Selection: Hashable>: Observabl
 }
 
 internal struct SWNavigationSidebarList<Content: View, Selection: Hashable>: View {
-    @EnvironmentObject var selectionStore: StopwatchNavigationSelectionStore<Selection>
+    @ObservedObject var selectionStore: StopwatchNavigationSelectionStore<Selection>
+    
+    init(selectionStore: StopwatchNavigationSelectionStore<Selection>? = nil, @ViewBuilder content: @escaping () -> Content) {
+        self.selectionStore = selectionStore ?? StopwatchNavigationSelectionStore<Selection>()
+        self.content = content()
+    }
     
     var content: Content
     
