@@ -24,13 +24,13 @@ public struct StopwatchButtonStyle: ButtonStyle {
         configuration.label
             .labelStyle(StopwatchButtonLabelStyle(styleConfiguration: styleConfiguration))
         
-            .frame(maxWidth: styleConfiguration.maxWidth, maxHeight: styleConfiguration.maxHeight, alignment: buttonAlignment)
+            .frame(maxWidth: styleConfiguration.maxWidth, maxHeight: styleConfiguration.maxHeight, alignment: buttonAlignment ?? styleConfiguration.alignment)
         
             .padding(.horizontal, styleConfiguration.padding.horizontal)
             .padding(.vertical,   styleConfiguration.padding.vertical)
         
             .fontWeight(.medium)
-            .background((buttonTint ?? .primary).opacity(styleConfiguration.shapeIdleOpacity))
+            .background((buttonTint ?? styleConfiguration.buttonTint).opacity(styleConfiguration.shapeIdleOpacity))
 
             .stopwatchHoverTarget(buttonStyleConfiguration: styleConfiguration, isPressed: $isPressed)
         
@@ -39,6 +39,9 @@ public struct StopwatchButtonStyle: ButtonStyle {
         
             .compositingGroup()
             .scaleEffect(isPressed ? styleConfiguration.pressedScale : 1.0)
+        
+            .padding(.horizontal, styleConfiguration.outerPadding.horizontal)
+            .padding(.vertical,   styleConfiguration.outerPadding.vertical)
         
 //            .stopwatchWantsAdaptiveCursor(false)
         
@@ -71,9 +74,13 @@ public struct StopwatchButtonStyleConfiguration {
     // @Environment(\.colorScheme) static var colorScheme
     #endif
     
-    var shapeIdleOpacity:    CGFloat
-    var shapeHoverOpacity:   CGFloat
-    var shapePressedOpacity: CGFloat
+    var buttonTint: Color = .primary
+    
+    var shape: any Shape = Capsule()
+    
+    var shapeIdleOpacity:    CGFloat = 0.2
+    var shapeHoverOpacity:   CGFloat = 0.25
+    var shapePressedOpacity: CGFloat = 0.3
     
     func shapeOpacityForState(state: ButtonInteractionState) -> CGFloat {
         switch state {
@@ -83,12 +90,14 @@ public struct StopwatchButtonStyleConfiguration {
         }
     }
     
+    var alignment: Alignment = .center
+    
     var maxWidth:  CGFloat? = nil
     var maxHeight: CGFloat? = nil
-    var padding: (horizontal: CGFloat, vertical: CGFloat) = (18.0, 10.0)
-    var pressedScale: CGFloat = 0.95
+    var padding:      (horizontal: CGFloat, vertical: CGFloat) = (18.0, 10.0)
+    var outerPadding: (horizontal: CGFloat, vertical: CGFloat) = (0.0, 0.0)
     
-    var shape: any Shape = Capsule()
+    var pressedScale: CGFloat = 0.95
     
     var labelIconSize: CGFloat = 17.0 // font size for icon Image
 }
@@ -113,11 +122,7 @@ extension StopwatchButtonStyleConfiguration {
     )
     #endif
     
-    public static let `default` = StopwatchButtonStyleConfiguration(
-        shapeIdleOpacity: 0.2,
-        shapeHoverOpacity: 0.25,
-        shapePressedOpacity: 0.3,
-    )
+    public static let `default` = StopwatchButtonStyleConfiguration()
     
     public static var transparent: StopwatchButtonStyleConfiguration {
         var styleConfig = `default`
@@ -158,7 +163,7 @@ extension StopwatchButtonStyleConfiguration {
 private struct StopwatchButtonStyleConfigurationKey: EnvironmentKey { static let defaultValue: StopwatchButtonStyleConfiguration? = nil }
 
 private struct StopwatchButtonTintKey:      EnvironmentKey { static let defaultValue: Color? = nil }
-private struct StopwatchButtonAlignmentKey: EnvironmentKey { static let defaultValue: Alignment = .center }
+private struct StopwatchButtonAlignmentKey: EnvironmentKey { static let defaultValue: Alignment? = nil }
 
 extension EnvironmentValues {
     var stopwatchButtonStyleConfiguration: StopwatchButtonStyleConfiguration? {
@@ -171,7 +176,7 @@ extension EnvironmentValues {
         set { self[StopwatchButtonTintKey.self] = newValue }
     }
     
-    var stopwatchButtonAlignment: Alignment {
+    var stopwatchButtonAlignment: Alignment? {
         get { self[StopwatchButtonAlignmentKey.self] }
         set { self[StopwatchButtonAlignmentKey.self] = newValue }
     }

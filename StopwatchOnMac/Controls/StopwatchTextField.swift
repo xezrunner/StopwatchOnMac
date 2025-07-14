@@ -67,45 +67,51 @@ public struct StopwatchTextFieldStyle<S: InsettableShape>: TextFieldStyle {
         } else { Log("No binding for clearable text field, yet we want to clear the TextField...") }
     }
     
+    func textField(configuration: TextField<Self._Label>) -> some View {
+        configuration
+        // FIXME: plain style text field moves up when focused for some reason!
+        .textFieldStyle(.plain)
+        .padding(.leading, textFieldIcon == nil ? 8 : 2)
+    
+        .focused($isFocused)
+        .focusable(isFocusable)
+        .onChange(of: isFocused, { _ , newValue in
+            if newValue == false { isFocusable = false }
+        })
+    
+        .allowsHitTesting(isFocused)
+    
+        .onKeyPress(.escape) {
+            _UnfocusAllViews()
+            return .handled
+        }
+    }
+    
     public func _body(configuration: TextField<Self._Label>) -> some View {
-        Button(action: focusTextField) {
-            HStack {
-                // Icon:
-                if let icon = textFieldIcon {
-                    icon
-                        .foregroundStyle(.secondary)
-                        .padding(.leading, 4)
-                }
-                
-                // TextField:
-                configuration
-                    // FIXME: plain style text field moves up when focused for some reason!
-                    .textFieldStyle(.plain)
-                    .padding(.leading, textFieldIcon == nil ? 8 : 2)
-                
-                    .focused($isFocused)
-                    .focusable(isFocusable)
-                    .onChange(of: isFocused, { _ , newValue in
-                        if newValue == false { isFocusable = false }
-                    })
-                
-                    .allowsHitTesting(isFocused)
-                
-                    .onKeyPress(.escape) {
-                        _UnfocusAllViews()
-                        return .handled
+        ZStack {
+            Button(action: focusTextField) {
+                HStack {
+                    // Icon:
+                    if let icon = textFieldIcon {
+                        icon
+                            .foregroundStyle(.secondary)
+                            .padding(.leading, 4)
                     }
-                
-                // Clear button:
-                if isFocused && textFieldClearableBinding != nil {
-                    Button(action: clearTextField) {
-                        Label(title: {}, icon: { Image(systemName: "xmark") })
+                    
+                    // TextField:
+                    textField(configuration: configuration)
+                    
+                    // Clear button:
+                    if isFocused && textFieldClearableBinding != nil {
+                        Button(action: clearTextField) {
+                            Label(title: {}, icon: { Image(systemName: "xmark") })
+                        }
+                        .stopwatchButtonStyleConfiguration(.circularSmall)
                     }
-                    .stopwatchButtonStyleConfiguration(.circularSmall)
                 }
             }
+            .buttonStyle(StopwatchTextFieldButtonStyle(isTextFieldFocused: _isFocused, shape: shape))
         }
-        .buttonStyle(StopwatchTextFieldButtonStyle(isTextFieldFocused: _isFocused, shape: shape))
     }
 }
 
@@ -142,6 +148,7 @@ internal struct StopwatchTextFieldButtonStyle<S: InsettableShape>: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         shape
             .fill(.ultraThinMaterial)
+            .frame(maxHeight: 40) // FIXME: shapes take up full space!
             .frame(maxWidth: .infinity, minHeight: 42, alignment: .leading)
             .overlay(border)
         

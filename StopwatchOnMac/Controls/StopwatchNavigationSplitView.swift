@@ -25,14 +25,22 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
         self.content = content
         self.detail  = detail
         
-        self._selectionStore = StateObject(wrappedValue: StopwatchNavigationSelectionStore(initialSelection: selection?.wrappedValue, binding: selection))
+        self._selectionStore = StateObject(
+            wrappedValue: StopwatchNavigationSelectionStore(initialSelection: selection?.wrappedValue, binding: selection)
+        )
     }
     
     public var body: some View {
         HStack(spacing: 0) {
             // TODO: do we want to force this list?
-            SWNavigationSidebarList<Sidebar, Selection>(selectionStore: selectionStore, content: sidebar)
-                .frame(maxWidth: 300, maxHeight: .infinity)
+            VStack {
+                sidebar()
+                    .stopwatchButtonStyleConfiguration(.sidebar)
+                    .stopwatchListStyleConfiguration(.sidebar)
+                    .environmentObject(selectionStore)
+            }
+            .padding(12)
+            .frame(maxWidth: 300, maxHeight: .infinity, alignment: .top)
             
             // TODO: Content!
             
@@ -46,8 +54,8 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
                 .safeAreaInset(edge: .top) {
                     if let title = detailTitle {
                         Text(title)
-                            .font(.system(size: 16, weight: .bold))
-                            .padding(.vertical, 24)
+                            .font(.system(size: 22, weight: .bold))
+                            .padding(.vertical, 32)
                             .ignoresSafeArea(.all, edges: .top)
                     }
                 }
@@ -82,7 +90,6 @@ extension StopwatchNavigationSplitView {
 
 // MARK: - Environment keys / preference keys / modifiers:
 
-// MARK: - Preference Key for Title
 struct StopwatchNavigationTitlePreferenceKey: PreferenceKey {
     static var defaultValue: String? = nil
     static func reduce(value: inout String?, nextValue: () -> String?) {
@@ -91,7 +98,7 @@ struct StopwatchNavigationTitlePreferenceKey: PreferenceKey {
 }
 
 struct StopwatchNavigationSplitViewDetailBackgroundTintEnvironmentKey: EnvironmentKey {
-    static var defaultValue: Color? = .primary.opacity(0.30)
+    static var defaultValue: Color? = .primary.opacity(0.70)
 }
 
 extension EnvironmentValues {
@@ -129,27 +136,6 @@ internal class StopwatchNavigationSelectionStore<Selection: Hashable>: Observabl
     }
 }
 
-internal struct SWNavigationSidebarList<Content: View, Selection: Hashable>: View {
-    @ObservedObject var selectionStore: StopwatchNavigationSelectionStore<Selection>
-    
-    init(selectionStore: StopwatchNavigationSelectionStore<Selection>? = nil, @ViewBuilder content: @escaping () -> Content) {
-        self.selectionStore = selectionStore ?? StopwatchNavigationSelectionStore<Selection>()
-        self.content = content()
-    }
-    
-    var content: Content
-    
-    var body: some View {
-        LazyVStack(spacing: 4) {
-            content
-                .listRowSeparator(.hidden)
-                .environmentObject(selectionStore)
-        }
-        .frame(maxHeight: .infinity, alignment: .top)
-        .padding([.horizontal, .bottom], 14.0)
-    }
-}
-
 // When using a StopwatchNavigationLink inside a StopwatchNavigation... content part, it will navigate that
 // part to whatever destination you provide in the link.
 @Observable internal class SWNavigationViewLinkage {
@@ -157,6 +143,8 @@ internal struct SWNavigationSidebarList<Content: View, Selection: Hashable>: Vie
 }
 
 public struct StopwatchNavigationLink<Destination: View, Label: View, Value: Hashable>: View {
+    @Environment(\.stopwatchButtonStyleConfiguration) private var buttonStyleConfigurationEnvironment
+
     @EnvironmentObject var selectionStore: StopwatchNavigationSelectionStore<Value>
     
     @Environment(SWNavigationViewLinkage.self) var viewLinkage
@@ -183,44 +171,32 @@ public struct StopwatchNavigationLink<Destination: View, Label: View, Value: Has
         return false
     }
     
+    private var buttonStyleConfiguration: StopwatchButtonStyleConfiguration {
+        buttonStyleConfigurationEnvironment ?? .navigationLinkInList
+    }
+    
     private var selectedStyleConfiguration: StopwatchButtonStyleConfiguration {
-        var configuration: StopwatchButtonStyleConfiguration = .sidebar
+        var configuration: StopwatchButtonStyleConfiguration = buttonStyleConfiguration
         
-        configuration.shapeIdleOpacity = 0.1
+        configuration.shapeIdleOpacity = 0.25
         
         return configuration
     }
     
     public var body: some View {
         Button(action: navigate, label: label)
-            .stopwatchButtonStyleConfiguration(!isSelected ? .sidebar : selectedStyleConfiguration)
-            .stopwatchButtonAlignment(.leading)
+            .stopwatchButtonStyleConfiguration(!isSelected ? buttonStyleConfiguration : selectedStyleConfiguration)
     }
 }
 
 extension StopwatchNavigationLink {
+    // FIXME: these crash due to not having selectionStore<Never>!
     public init(_ titleKey: LocalizedStringKey) where Label == Text, Value == Never, Destination == Never {
         self.label = { Text(titleKey) }
     }
     
-    // MARK: - Destination-based:
-    @_disfavoredOverload // https://forums.swift.org/t/how-to-determine-if-a-passed-argument-is-a-string-literal/41651/6
-    public init<S: StringProtocol>(_ titleKey: S, @ViewBuilder destination: @escaping () -> Destination) where Label == Text, Value == UUID {
-        self.destination = destination
-        self._destinationImplicitID = UUID()
-        self.label = { Text(titleKey) }
-    }
-    
-    public init(_ titleKey: LocalizedStringKey, @ViewBuilder destination: @escaping () -> Destination) where Label == Text, Value == UUID {
-        self.destination = destination
-        self._destinationImplicitID = UUID()
-        self.label = { Text(titleKey) }
-    }
-    
-    public init(@ViewBuilder destination: @escaping () -> Destination, @ViewBuilder label: @escaping () -> Label) where Value == UUID {
-        self.destination = destination
-        self._destinationImplicitID = UUID()
-        self.label = label
+    public init(title: LocalizedStringKey, iconSystemName: String) where Label == SwiftUI.Label<Text, Image>, Value == Never, Destination == Never {
+        self.label = { SwiftUI.Label(title, systemImage: iconSystemName) }
     }
     
     @_disfavoredOverload
@@ -228,36 +204,50 @@ extension StopwatchNavigationLink {
         self.label = { Text(titleKey) }
     }
     
+    // MARK: - Destination-based:
+    public init(@ViewBuilder destination: @escaping () -> Destination, @ViewBuilder label: @escaping () -> Label) where Value == UUID {
+        self.destination = destination
+        self._destinationImplicitID = UUID()
+        self.label = label
+    }
+    
+    @_disfavoredOverload // https://forums.swift.org/t/how-to-determine-if-a-passed-argument-is-a-string-literal/41651/6
+    public init<S: StringProtocol>(_ titleKey: S, @ViewBuilder destination: @escaping () -> Destination) where Label == Text, Value == UUID {
+        self.init(destination: destination, label: { Text(titleKey) })
+    }
+    
+    public init(_ titleKey: LocalizedStringKey, @ViewBuilder destination: @escaping () -> Destination) where Label == Text, Value == UUID {
+        self.init(destination: destination, label: { Text(titleKey) })
+    }
+    
     // MARK: - Value-based:
-//#if FEATURE_NAVSPLITVIEW_SELECTION
-    @_disfavoredOverload
-    public init<S: StringProtocol>(_ titleKey: S, value: Value) where Label == Text, Destination == Never {
-        self.value = value
-        self.label = { Text(titleKey) }
-    }
-    
-    public init(_ titleKey: LocalizedStringKey, value: Value) where Label == Text, Destination == Never {
-        self.value = value
-        self.label = { Text(titleKey) }
-    }
-    
     public init(value: Value, @ViewBuilder label: @escaping () -> Label) where Destination == Never {
         self.value = value
         self.label = label
     }
-//#endif
+    
+    @_disfavoredOverload
+    public init<S: StringProtocol>(_ titleKey: S, value: Value) where Label == Text, Destination == Never {
+        self.init(value: value, label: { Text(titleKey) })
+    }
+    
+    public init(_ titleKey: LocalizedStringKey, value: Value) where Label == Text, Destination == Never {
+        self.init(value: value, label: { Text(titleKey) })
+    }
 }
 
 extension StopwatchButtonStyleConfiguration {
     public static var sidebar: StopwatchButtonStyleConfiguration {
         var styleConfig = transparent
         
-        styleConfig.shape = RoundedRectangle(cornerRadius: 10.0, style: .continuous)
+        // TODO: unify roundness!
+        styleConfig.shape = RoundedRectangle(cornerRadius: 12.0, style: .circular)
         styleConfig.shapeHoverOpacity = 0.1
         styleConfig.shapePressedOpacity = 0.25
         
+        styleConfig.alignment = .leading
         styleConfig.maxWidth = .infinity
-        styleConfig.padding = (12.0, 14.0)
+        styleConfig.padding = (20.0, 14.0)
         styleConfig.pressedScale = 1.0
         
         styleConfig.labelIconSize = 26.0
@@ -265,11 +255,12 @@ extension StopwatchButtonStyleConfiguration {
         return styleConfig
     }
     
-    public static var navigationLink: StopwatchButtonStyleConfiguration {
+    internal static var navigationLinkInList: StopwatchButtonStyleConfiguration {
         var styleConfig = sidebar
         
-        styleConfig.shapeIdleOpacity = 0.1
-
+        styleConfig.shape = Rectangle()
+        styleConfig.maxHeight = .infinity
+        
         return styleConfig
     }
 }
