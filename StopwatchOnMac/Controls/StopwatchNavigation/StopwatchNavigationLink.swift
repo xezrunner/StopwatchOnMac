@@ -111,6 +111,8 @@ extension StopwatchButtonStyleConfiguration {
         
         styleConfig.labelIconSize = 26.0
         
+        styleConfig.font = .system(size: 16)
+        
         return styleConfig
     }
     

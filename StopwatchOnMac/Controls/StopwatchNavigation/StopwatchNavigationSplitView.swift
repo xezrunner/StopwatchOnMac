@@ -55,7 +55,7 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
                     if let title = detailTitle {
                         Text(title)
                             .font(.system(size: 22, weight: .bold))
-                            .padding(.vertical, 32)
+                            .padding(.top, 32)
                             .ignoresSafeArea(.all, edges: .top)
                     }
                 }

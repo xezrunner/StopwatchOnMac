@@ -4,6 +4,7 @@ import SwiftUI
 
 public struct StopwatchButtonStyle: ButtonStyle {
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.font)        private var fontEnvironment
     
     @Environment(\.stopwatchButtonStyleConfiguration) private var styleConfiguration
     fileprivate var styleConfigurationOverride: StopwatchButtonStyleConfiguration?
@@ -29,7 +30,7 @@ public struct StopwatchButtonStyle: ButtonStyle {
             .padding(.horizontal, styleConfiguration.padding.horizontal)
             .padding(.vertical,   styleConfiguration.padding.vertical)
         
-            .fontWeight(.medium)
+            .font(styleConfiguration.font ?? fontEnvironment?.weight(.medium) ?? .body)
             .background((buttonTint ?? styleConfiguration.buttonTint).opacity(styleConfiguration.shapeIdleOpacity))
 
             .stopwatchHoverTarget(buttonStyleConfiguration: styleConfiguration, isPressed: $isPressed)
@@ -91,6 +92,8 @@ public struct StopwatchButtonStyleConfiguration {
     }
     
     var alignment: Alignment = .center
+    
+    var font: Font?
     
     var maxWidth:  CGFloat? = nil
     var maxHeight: CGFloat? = nil
