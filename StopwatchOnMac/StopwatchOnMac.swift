@@ -53,7 +53,7 @@ extension View {
             .preferredColorScheme(.dark) // TODO: we don't necessarily want to force dark mode, but visionOS does seem more like dark mode
             .tint(.primary)
         
-            .containerBackground(.thinMaterial, for: .window)
+            .containerBackground(.ultraThinMaterial, for: .window)
             .overlay { if needsBorder { StopwatchWindowBorder() } }
         
             .buttonStyle(StopwatchButtonStyle())

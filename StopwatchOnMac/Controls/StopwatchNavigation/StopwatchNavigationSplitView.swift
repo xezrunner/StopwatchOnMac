@@ -40,7 +40,7 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
                     .environmentObject(selectionStore)
             }
             .padding(12)
-            .frame(maxWidth: 340, maxHeight: .infinity, alignment: .top)
+            .frame(maxWidth: 315, maxHeight: .infinity, alignment: .top)
             
             // TODO: Content!
             

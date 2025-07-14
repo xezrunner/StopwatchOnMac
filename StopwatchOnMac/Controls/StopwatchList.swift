@@ -142,7 +142,7 @@ public struct StopwatchListStyleConfiguration {
     var sectionLabelPadding: (horizontal: CGFloat, vertical: CGFloat) = (18.0, 4.0)
     
     var spacing: CGFloat = 0.0
-    var padding: (horizontal: CGFloat, vertical: CGFloat) = (64.0, 0.0)
+    var padding: (horizontal: CGFloat, vertical: CGFloat) = (60.0, 0.0)
 }
 
 extension StopwatchListStyleConfiguration {
