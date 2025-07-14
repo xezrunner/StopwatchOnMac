@@ -20,8 +20,10 @@ public struct StopwatchList<Content: View, Selection: Hashable>: View {
     var content: Content
     
     public var body: some View {
-        _VariadicView.Tree(StopwatchListSectionLayout()) {
-            content
+        ScrollView {
+            _VariadicView.Tree(StopwatchListSectionLayout()) {
+                content
+            }
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .padding(.horizontal, styleConfiguration.padding.horizontal)
