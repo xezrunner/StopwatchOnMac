@@ -13,10 +13,6 @@ public struct StopwatchList<Content: View, Selection: Hashable>: View {
         self.content = content()
     }
     
-    public init(@ViewBuilder content: @escaping () -> Content) where Selection == UUID {
-        self.init(selectionStore: nil, content: content)
-    }
-    
     var content: Content
     
     public var body: some View {
@@ -33,6 +29,28 @@ public struct StopwatchList<Content: View, Selection: Hashable>: View {
         
         .environment(\.stopwatchListStyleConfiguration, styleConfiguration)
         .environmentObject(selectionStore)
+    }
+}
+
+extension StopwatchList {
+    public init(@ViewBuilder content: @escaping () -> Content) where Selection == UUID {
+        self.init(selectionStore: nil, content: content)
+    }
+    
+    // TODO: other List initializers?
+    
+    public init<Data, RowContent>(_ data: Data, @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
+    where Content == ForEach<Data, Data.Element.ID, RowContent>,
+          Data: RandomAccessCollection,
+          RowContent : View,
+          Data.Element : Identifiable,
+          Selection == Data.Element.ID {
+        self.init(selectionStore: nil) {
+            // TODO: not entirely sure about this one, but it does work:
+            ForEach(data, id: \.id) { element in
+                rowContent(element)
+            }
+        }
     }
 }
 
