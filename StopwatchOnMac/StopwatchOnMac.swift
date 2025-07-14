@@ -20,14 +20,6 @@ extension View {
 // Styling:
 
 internal struct StopwatchWindowBorder: View {
-    var windowCornerRadius: CGFloat {
-        if #available(macOS 26, *) {
-            return 16.0
-        } else {
-            return 11.0
-        }
-    }
-    
     var body: some View {
         let endRadius = 700.0
         
@@ -38,7 +30,7 @@ internal struct StopwatchWindowBorder: View {
             Gradient.Stop(color: .clear, location: 0),
         ], center: UnitPoint(x: randomX, y: randomY), startRadius: 0, endRadius: endRadius)
         
-        RoundedRectangle(cornerRadius: windowCornerRadius)
+        RoundedRectangle(cornerRadius: STOPWATCH_WINDOW_CORNER_RADIUS)
             .strokeBorder(gradient, lineWidth: 0.8)
 //            .strokeBorder(gradient, lineWidth: 240)
             .ignoresSafeArea()

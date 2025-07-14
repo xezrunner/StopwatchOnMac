@@ -25,7 +25,14 @@ public struct StopwatchWindow<Content: View>: Scene {
     }
 }
 
+internal let STOPWATCH_WINDOW_CORNER_RADIUS = 48.0
+
 private struct StopwatchWindowSupport {
+    internal static func nudgeOrigin(_ point: CGPoint?, by: CGPoint) -> CGPoint {
+        if let point = point { return .init(x: point.x + by.x, y: point.y + by.y) }
+        return .zero
+    }
+    
     public static func SWCustomizeWindow(window: NSWindow?) {
         guard let window = window else { Log("no window, ignoring"); return }
         
@@ -35,6 +42,23 @@ private struct StopwatchWindowSupport {
         window.backgroundColor = .clear
         
         window.hasShadow = false
+        
+        // Rounded corners:
+        window.contentView?.wantsLayer = true
+        window.contentView?.layer?.cornerRadius = STOPWATCH_WINDOW_CORNER_RADIUS
+        window.contentView?.layer?.masksToBounds = true
+        
+        // Move window controls:
+        let nudge = CGPoint(x: 24, y: -10)
+        
+        let close = window.standardWindowButton(.closeButton)?.frame.origin
+        window.standardWindowButton(.closeButton)?.frame.origin = nudgeOrigin(close, by: nudge)
+        
+        let min = window.standardWindowButton(.miniaturizeButton)?.frame.origin
+        window.standardWindowButton(.miniaturizeButton)?.frame.origin = nudgeOrigin(min, by: nudge)
+        
+        let zoom = window.standardWindowButton(.zoomButton)?.frame.origin
+        window.standardWindowButton(.zoomButton)?.frame.origin = nudgeOrigin(zoom, by: nudge)
     }
 }
 
