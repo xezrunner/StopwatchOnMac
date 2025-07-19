@@ -1,7 +1,26 @@
 // StopwatchOnMacDemo::StopwatchNavigationLink.swift - 14/07/2025
 import SwiftUI
 
+public struct SWNavigationImplicitDestinationID: RawRepresentable, Hashable, Identifiable {
+    public let rawValue: UUID
+    public var id: UUID { rawValue }
+
+    public init() { rawValue = .init() }
+    public init(rawValue: UUID) { self.rawValue = rawValue }
+}
+
+internal struct SWNavigationAnyViewPathWrapper: Hashable {
+    public let id = SWNavigationImplicitDestinationID()
+    
+    static var Registry = [SWNavigationImplicitDestinationID: () -> AnyView]()
+    
+    init<V: View>(_ view: @escaping () -> V) {
+        SWNavigationAnyViewPathWrapper.Registry[id] = { AnyView(view()) }
+    }
+}
+
 public struct StopwatchNavigationLink<Destination: View, Label: View, Value: Hashable>: View {
+    @Environment(\.stopwatchNavigationPath)           private var navigationPath
     @Environment(\.stopwatchButtonStyleConfiguration) private var buttonStyleConfigurationEnvironment
 
     @EnvironmentObject var selectionStore: StopwatchNavigationSelectionStore<Value>
@@ -17,10 +36,13 @@ public struct StopwatchNavigationLink<Destination: View, Label: View, Value: Has
     
     private func navigate() {
         if let destination = destination {
-            viewLinkage.view = { AnyView(destination()) }
+            let wrapper = SWNavigationAnyViewPathWrapper(destination)
+            navigationPath?.wrappedValue.append(wrapper.id)
         } else { print("StopwatchNavigationLink: no destination, skipping navigation") }
         
-        if let value = value ?? _destinationImplicitID { selectionStore.selection = value }
+        if let value = value ?? _destinationImplicitID {
+            selectionStore.selection = value
+        }
     }
     
     var isSelected: Bool {
@@ -64,18 +86,18 @@ extension StopwatchNavigationLink {
     }
     
     // MARK: - Destination-based:
-    public init(@ViewBuilder destination: @escaping () -> Destination, @ViewBuilder label: @escaping () -> Label) where Value == UUID {
+    public init(@ViewBuilder destination: @escaping () -> Destination, @ViewBuilder label: @escaping () -> Label) where Value == SWNavigationImplicitDestinationID {
         self.destination = destination
-        self._destinationImplicitID = UUID()
+        self._destinationImplicitID = .init()
         self.label = label
     }
     
     @_disfavoredOverload // https://forums.swift.org/t/how-to-determine-if-a-passed-argument-is-a-string-literal/41651/6
-    public init<S: StringProtocol>(_ titleKey: S, @ViewBuilder destination: @escaping () -> Destination) where Label == Text, Value == UUID {
+    public init<S: StringProtocol>(_ titleKey: S, @ViewBuilder destination: @escaping () -> Destination) where Label == Text, Value == SWNavigationImplicitDestinationID {
         self.init(destination: destination, label: { Text(titleKey) })
     }
     
-    public init(_ titleKey: LocalizedStringKey, @ViewBuilder destination: @escaping () -> Destination) where Label == Text, Value == UUID {
+    public init(_ titleKey: LocalizedStringKey, @ViewBuilder destination: @escaping () -> Destination) where Label == Text, Value == SWNavigationImplicitDestinationID {
         self.init(destination: destination, label: { Text(titleKey) })
     }
     

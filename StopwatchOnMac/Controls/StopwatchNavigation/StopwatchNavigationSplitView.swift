@@ -17,6 +17,8 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
     var content: () -> Content
     var detail:  () -> Detail
     
+    @State var detailNavigationPath: NavigationPath = .init()
+    
     public init(selection: Binding<Selection>? = nil,
                 @ViewBuilder sidebar: @escaping () -> Sidebar,
                 @ViewBuilder content: @escaping () -> Content,
@@ -44,17 +46,32 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
             
             // TODO: Content!
             
-            NavigationStack(root: viewLinkageDetail.view ?? { AnyView(detail()) })
+            let detailNavigationStackRoot = {
+                Group {
+                    if let view = viewLinkageDetail.view {
+                        view()
+                    } else {
+                        AnyView(detail())
+                    }
+                }
+                .navigationBarBackButtonHidden()
+                .navigationDestination(for: SWNavigationImplicitDestinationID.self) { item in
+                    SWNavigationAnyViewPathWrapper.Registry[item]?() // Implicit destination
+                }
+            }
+                
+            NavigationStack(path: $detailNavigationPath, root: detailNavigationStackRoot)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(
                     detailBackgroundTint?
                         .ignoresSafeArea()
                         .blendMode(.softLight)
                 )
+            
                 .safeAreaInset(edge: .top) {
                     if let title = detailTitle {
                         Text(title)
-                            .font(.system(size: 22, weight: .bold))
+                            .font(.system(size: 22, weight: .semibold))
                             .padding(.top, 32)
                             .ignoresSafeArea(.all, edges: .top)
                     }
@@ -62,6 +79,21 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
                 .onPreferenceChange(StopwatchNavigationTitlePreferenceKey.self) { title in
                     detailTitle = title
                 }
+            
+                // TODO: Stopwatch toolbar equivalent
+                .toolbar {
+                    if !detailNavigationPath.isEmpty {
+                        StopwatchToolbarItem(placement: .principal) {
+                            Button {
+                                detailNavigationPath.removeLast()
+                            } label: {
+                                Image(systemName: "chevron.left")
+                            }
+                        }
+                    }
+                }
+            
+                .environment(\.stopwatchNavigationPath, $detailNavigationPath)
         }
         .environment(viewLinkageDetail)
     }
@@ -79,11 +111,11 @@ extension StopwatchNavigationSplitView {
     // MARK: - Without selection:
     public init(@ViewBuilder sidebar: @escaping () -> Sidebar,
                 @ViewBuilder content: @escaping () -> Content,
-                @ViewBuilder detail:  @escaping () -> Detail) where Selection == UUID {
+                @ViewBuilder detail:  @escaping () -> Detail) where Selection == SWNavigationImplicitDestinationID {
         self.init(selection: nil, sidebar: sidebar, content: content, detail: detail)
     }
     
-    public init(@ViewBuilder sidebar: @escaping () -> Sidebar, @ViewBuilder detail: @escaping () -> Detail) where Content == EmptyView, Selection == UUID {
+    public init(@ViewBuilder sidebar: @escaping () -> Sidebar, @ViewBuilder detail: @escaping () -> Detail) where Content == EmptyView, Selection == SWNavigationImplicitDestinationID {
         self.init(selection: nil, sidebar: sidebar, content: { EmptyView() }, detail: detail)
     }
 }
@@ -101,10 +133,19 @@ struct StopwatchNavigationSplitViewDetailBackgroundTintEnvironmentKey: Environme
     static var defaultValue: Color? = .primary.opacity(0.70)
 }
 
+struct StopwatchNavigationPathEnvironmentKey: EnvironmentKey {
+    static var defaultValue: Binding<NavigationPath>? = nil
+}
+
 extension EnvironmentValues {
     var stopwatchNavigationSplitViewDetailBackgroundTint: Color? {
         get { self[StopwatchNavigationSplitViewDetailBackgroundTintEnvironmentKey.self] }
         set { self[StopwatchNavigationSplitViewDetailBackgroundTintEnvironmentKey.self] = newValue }
+    }
+    
+    var stopwatchNavigationPath: Binding<NavigationPath>? {
+        get { self[StopwatchNavigationPathEnvironmentKey.self] }
+        set { self[StopwatchNavigationPathEnvironmentKey.self] = newValue }
     }
 }
 

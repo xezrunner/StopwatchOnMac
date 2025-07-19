@@ -29,11 +29,12 @@ public struct StopwatchList<Content: View, Selection: Hashable>: View {
         
         .environment(\.stopwatchListStyleConfiguration, styleConfiguration)
         .environmentObject(selectionStore)
+        .environmentObject(StopwatchNavigationSelectionStore<SWNavigationImplicitDestinationID>()) // for List data initializer + implicit destinations
     }
 }
 
 extension StopwatchList {
-    public init(@ViewBuilder content: @escaping () -> Content) where Selection == UUID {
+    public init(@ViewBuilder content: @escaping () -> Content) where Selection == SWNavigationImplicitDestinationID {
         self.init(selectionStore: nil, content: content)
     }
     
