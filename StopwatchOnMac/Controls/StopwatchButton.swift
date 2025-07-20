@@ -140,6 +140,7 @@ extension StopwatchButtonStyleConfiguration {
         
         // TODO: icon only label from here?
         styleConfig.shape     = Circle()
+        styleConfig.font      = .system(size: 16, weight: .semibold)
         styleConfig.padding   = (8, 8)
         styleConfig.maxWidth  = 24
         styleConfig.maxHeight = 24
@@ -148,10 +149,8 @@ extension StopwatchButtonStyleConfiguration {
     }
     
     public static var circularSmall: StopwatchButtonStyleConfiguration {
-        var styleConfig = `default`
+        var styleConfig = circular
         
-        // TODO: icon only label from here?
-        styleConfig.shape     = Circle()
         styleConfig.padding   = (4, 4)
         styleConfig.maxWidth  = 18
         styleConfig.maxHeight = 18

@@ -1,63 +1,55 @@
 // StopwatchOnMac::StopwatchToolbar.swift - 02.07.2025
 import SwiftUI
 
-// MARK: - Environment Values and Keys
-// TODO: we might want to use environment keys, if we decide that we want custom toolbar presentations
-#if false
-private struct StopwatchToolbarContentKey: EnvironmentKey {
-    static let defaultValue: AnyView? = nil
-}
-
-extension EnvironmentValues {
-    var stopwatchToolbarContent: AnyView? {
-        get { self[StopwatchToolbarContentKey.self] }
-        set { self[StopwatchToolbarContentKey.self] = newValue }
-    }
-}
-#endif
-
-public extension View {
-    func stopwatchToolbar<Content: ToolbarContent>(@ViewBuilder content: @escaping () -> Content) -> some View {
-        self.toolbar(content: content)
+internal struct StopwatchToolbarContentPreferenceKey: PreferenceKey {
+    static var defaultValue: [SWToolbarContent] = []
+    
+    static func reduce(value: inout Value, nextValue: () -> [SWToolbarContent]) {
+        value.append(contentsOf: nextValue())
     }
 }
 
-public struct StopwatchToolbarItem<Content: View>: ToolbarContent {
-    @ViewBuilder let content: () -> Content
-    
-    var placement: ToolbarItemPlacement = .automatic
-    
-    public init(placement: ToolbarItemPlacement = .automatic, @ViewBuilder content: @escaping () -> Content) {
-        self.placement = placement
-        self.content = content
-    }
-    
-    public var body: some ToolbarContent {
-        let toolbarItem = ToolbarItem(placement: placement, content: content)
-        
-        if #available(macOS 26, *) {
-            toolbarItem
-                .sharedBackgroundVisibility(.hidden)
-        } else { toolbarItem }
+extension View {
+    public func stopwatchToolbar<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
+        self
+            .preference(key: StopwatchToolbarContentPreferenceKey.self, value: [SWToolbarContent(view: AnyView(content()))])
     }
 }
 
-public struct StopwatchToolbarItemGroup<Content: View>: ToolbarContent {
-    @ViewBuilder let content: () -> Content
-    
-    var placement: ToolbarItemPlacement = .automatic
-    
-    public init(placement: ToolbarItemPlacement = .automatic, @ViewBuilder content: @escaping () -> Content) {
-        self.placement = placement
-        self.content = content
+internal struct SWToolbarContent: Identifiable, Hashable, Equatable {
+    static func == (lhs: SWToolbarContent, rhs: SWToolbarContent) -> Bool {
+        lhs.id == rhs.id
     }
     
-    public var body: some ToolbarContent {
-        let toolbarItemGroup = ToolbarItemGroup(placement: placement, content: content)
-        
-        if #available(macOS 26, *) {
-            toolbarItemGroup
-                .sharedBackgroundVisibility(.hidden)
-        } else { toolbarItemGroup }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
+    
+    let id = UUID()
+    var view: AnyView
 }
+
+//internal struct SWToolbarContentHost<Content: View>: View {
+//    @ViewBuilder var content: Content
+//    
+//    var body: some View {
+//        content
+//            .background(.red)
+//            .overlay { Text("SWToolbarContentHost!").background(.black) }
+//    }
+//}
+
+//extension SWToolbarContentHost {
+//    public init<Data, RowContent>(_ data: Data, @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
+//    where Content == ForEach<Data, Data.Element.ID, RowContent>,
+//          Data: RandomAccessCollection,
+//          RowContent : View,
+//          Data.Element : Identifiable {
+//        self.init() {
+//            // TODO: not entirely sure about this one, but it does work:
+//            ForEach(data, id: \.id) { element in
+//                rowContent(element)
+//            }
+//        }
+//    }
+//}

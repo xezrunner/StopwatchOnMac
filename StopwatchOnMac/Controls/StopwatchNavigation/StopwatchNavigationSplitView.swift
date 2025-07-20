@@ -10,6 +10,7 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
     @StateObject var selectionStore: StopwatchNavigationSelectionStore<Selection>
     
     @State private var detailTitle: String?
+    @State private var detailToolbarViews: [SWToolbarContent] = []
     
     @Environment(\.stopwatchNavigationSplitViewDetailBackgroundTint) var detailBackgroundTint
     
@@ -69,28 +70,35 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
                 )
             
                 .safeAreaInset(edge: .top) {
-                    if let title = detailTitle {
-                        Text(title)
-                            .font(.system(size: 22, weight: .semibold))
-                            .padding(.top, 32)
-                            .ignoresSafeArea(.all, edges: .top)
+                    HStack {
+                        if let title = detailTitle {
+                            Text(title)
+                                .font(.system(size: 22, weight: .semibold))
+                                .padding(.top, 32)
+                                .ignoresSafeArea(.all, edges: .top)
+                        }
                     }
                 }
-                .onPreferenceChange(StopwatchNavigationTitlePreferenceKey.self) { title in
-                    detailTitle = title
-                }
             
-                // TODO: Stopwatch toolbar equivalent
-                .toolbar {
-                    if !detailNavigationPath.isEmpty {
-                        StopwatchToolbarItem(placement: .principal) {
+                .safeAreaInset(edge: .top, alignment: .leading) {
+                    HStack {
+                        if !detailNavigationPath.isEmpty {
                             Button {
                                 detailNavigationPath.removeLast()
                             } label: {
                                 Image(systemName: "chevron.left")
                             }
+                            .stopwatchButtonStyleConfiguration(.circular)
                         }
                     }
+                    .padding(.horizontal, 24)
+                }
+            
+                .onPreferenceChange(StopwatchToolbarContentPreferenceKey.self) { views in
+                    detailToolbarViews = views
+                }
+                .onPreferenceChange(StopwatchNavigationTitlePreferenceKey.self) { title in
+                    detailTitle = title
                 }
             
                 .environment(\.stopwatchNavigationPath, $detailNavigationPath)
