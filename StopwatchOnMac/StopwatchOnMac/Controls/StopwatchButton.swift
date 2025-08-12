@@ -44,6 +44,8 @@ public struct StopwatchButtonStyle: ButtonStyle {
             .padding(.horizontal, styleConfiguration.outerPadding.horizontal)
             .padding(.vertical,   styleConfiguration.outerPadding.vertical)
         
+            .contentShape(AnyShape(styleConfiguration.shape))
+        
 //            .stopwatchWantsAdaptiveCursor(false)
         
             .onChange(of: configuration.isPressed) { _, newValue in

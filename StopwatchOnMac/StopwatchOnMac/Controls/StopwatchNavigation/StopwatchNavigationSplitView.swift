@@ -7,7 +7,7 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
     private var viewLinkageDetail  = SWNavigationViewLinkage()
     private var viewLinkageContent = SWNavigationViewLinkage()
     
-    @StateObject var selectionStore: StopwatchNavigationSelectionStore<Selection>
+    @State var sidebarSelectionStore = SWSelectionStore()
     
     @State private var detailTitle: String?
     @State private var detailToolbarViews: [SWToolbarContent] = []
@@ -28,8 +28,8 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
         self.content = content
         self.detail  = detail
         
-        self._selectionStore = StateObject(
-            wrappedValue: StopwatchNavigationSelectionStore(initialSelection: selection?.wrappedValue, binding: selection)
+        self._sidebarSelectionStore = State(
+            wrappedValue: SWSelectionStore(isActive: selection != nil, selection: selection?.wrappedValue)
         )
     }
     
@@ -38,9 +38,8 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
             // TODO: do we want to force this list?
             VStack {
                 sidebar()
-                    .stopwatchButtonStyleConfiguration(.sidebar)
                     .stopwatchListStyleConfiguration(.sidebar)
-                    .environmentObject(selectionStore)
+                    .environment(sidebarSelectionStore)
             }
             .padding(12)
             .frame(maxWidth: 315, maxHeight: .infinity, alignment: .top)
@@ -190,4 +189,3 @@ internal class StopwatchNavigationSelectionStore<Selection: Hashable>: Observabl
 @Observable internal class SWNavigationViewLinkage {
     var view: (() -> AnyView)?
 }
-
