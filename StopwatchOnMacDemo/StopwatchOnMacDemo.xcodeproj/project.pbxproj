@@ -1,0 +1,423 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2101E9522E07360400363183 /* LibraryTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2101E9512E0735F900363183 /* LibraryTab.swift */; };
+		2147E4C62E15481300E8F6E5 /* SettingsDemoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2147E4C52E15481000E8F6E5 /* SettingsDemoContentView.swift */; };
+		215B14C72E0049A200DD5C3F /* DeveloperDemoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B14C42E0049A200DD5C3F /* DeveloperDemoContentView.swift */; };
+		215B14C82E0049A200DD5C3F /* StopwatchOnMacDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B14C52E0049A200DD5C3F /* StopwatchOnMacDemoApp.swift */; };
+		215B14C92E0049A200DD5C3F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 215B14C32E0049A200DD5C3F /* Assets.xcassets */; };
+		215B14E72E0049D100DD5C3F /* StopwatchOnMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 215B14E52E0049BC00DD5C3F /* StopwatchOnMac.framework */; };
+		21C901332E0717B7002FAC59 /* AppleMusicDemoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C901322E0717B3002FAC59 /* AppleMusicDemoContentView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		215B14E42E0049BC00DD5C3F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 215B14DE2E0049BB00DD5C3F /* StopwatchOnMac.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 215B14D42E0049BB00DD5C3F;
+			remoteInfo = StopwatchOnMac;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		2101E9512E0735F900363183 /* LibraryTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryTab.swift; sourceTree = "<group>"; };
+		2147E4C52E15481000E8F6E5 /* SettingsDemoContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDemoContentView.swift; sourceTree = "<group>"; };
+		215B14B52E00498B00DD5C3F /* StopwatchOnMacDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StopwatchOnMacDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		215B14C32E0049A200DD5C3F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		215B14C42E0049A200DD5C3F /* DeveloperDemoContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperDemoContentView.swift; sourceTree = "<group>"; };
+		215B14C52E0049A200DD5C3F /* StopwatchOnMacDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchOnMacDemoApp.swift; sourceTree = "<group>"; };
+		215B14DE2E0049BB00DD5C3F /* StopwatchOnMac.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = StopwatchOnMac.xcodeproj; path = ../StopwatchOnMac/StopwatchOnMac.xcodeproj; sourceTree = SOURCE_ROOT; };
+		21C901322E0717B3002FAC59 /* AppleMusicDemoContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicDemoContentView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		215B14B22E00498B00DD5C3F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				215B14E72E0049D100DD5C3F /* StopwatchOnMac.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2101E94F2E0735B000363183 /* Apple Music demo */ = {
+			isa = PBXGroup;
+			children = (
+				2101E9512E0735F900363183 /* LibraryTab.swift */,
+				21C901322E0717B3002FAC59 /* AppleMusicDemoContentView.swift */,
+			);
+			path = "Apple Music demo";
+			sourceTree = "<group>";
+		};
+		2147E4C32E15480800E8F6E5 /* Settings demo */ = {
+			isa = PBXGroup;
+			children = (
+				2147E4C52E15481000E8F6E5 /* SettingsDemoContentView.swift */,
+			);
+			path = "Settings demo";
+			sourceTree = "<group>";
+		};
+		215B14AC2E00498B00DD5C3F = {
+			isa = PBXGroup;
+			children = (
+				215B14C62E0049A200DD5C3F /* StopwatchOnMacDemo */,
+				215B14E62E0049D100DD5C3F /* Frameworks */,
+				215B14DE2E0049BB00DD5C3F /* StopwatchOnMac.xcodeproj */,
+				215B14B62E00498B00DD5C3F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		215B14B62E00498B00DD5C3F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				215B14B52E00498B00DD5C3F /* StopwatchOnMacDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		215B14C62E0049A200DD5C3F /* StopwatchOnMacDemo */ = {
+			isa = PBXGroup;
+			children = (
+				2147E4C32E15480800E8F6E5 /* Settings demo */,
+				2101E94F2E0735B000363183 /* Apple Music demo */,
+				215B14C42E0049A200DD5C3F /* DeveloperDemoContentView.swift */,
+				215B14C52E0049A200DD5C3F /* StopwatchOnMacDemoApp.swift */,
+				215B14C32E0049A200DD5C3F /* Assets.xcassets */,
+			);
+			path = StopwatchOnMacDemo;
+			sourceTree = "<group>";
+		};
+		215B14E12E0049BC00DD5C3F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				215B14E52E0049BC00DD5C3F /* StopwatchOnMac.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		215B14E62E0049D100DD5C3F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		215B14B42E00498B00DD5C3F /* StopwatchOnMacDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 215B14C02E00498D00DD5C3F /* Build configuration list for PBXNativeTarget "StopwatchOnMacDemo" */;
+			buildPhases = (
+				215B14B12E00498B00DD5C3F /* Sources */,
+				215B14B22E00498B00DD5C3F /* Frameworks */,
+				215B14B32E00498B00DD5C3F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StopwatchOnMacDemo;
+			packageProductDependencies = (
+			);
+			productName = StopwatchOnMacDemo;
+			productReference = 215B14B52E00498B00DD5C3F /* StopwatchOnMacDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		215B14AD2E00498B00DD5C3F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2600;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					215B14B42E00498B00DD5C3F = {
+						CreatedOnToolsVersion = 26.0;
+					};
+				};
+			};
+			buildConfigurationList = 215B14B02E00498B00DD5C3F /* Build configuration list for PBXProject "StopwatchOnMacDemo" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 215B14AC2E00498B00DD5C3F;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 215B14B62E00498B00DD5C3F /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 215B14E12E0049BC00DD5C3F /* Products */;
+					ProjectRef = 215B14DE2E0049BB00DD5C3F /* StopwatchOnMac.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				215B14B42E00498B00DD5C3F /* StopwatchOnMacDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		215B14E52E0049BC00DD5C3F /* StopwatchOnMac.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = StopwatchOnMac.framework;
+			remoteRef = 215B14E42E0049BC00DD5C3F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		215B14B32E00498B00DD5C3F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				215B14C92E0049A200DD5C3F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		215B14B12E00498B00DD5C3F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				215B14C72E0049A200DD5C3F /* DeveloperDemoContentView.swift in Sources */,
+				2101E9522E07360400363183 /* LibraryTab.swift in Sources */,
+				21C901332E0717B7002FAC59 /* AppleMusicDemoContentView.swift in Sources */,
+				2147E4C62E15481300E8F6E5 /* SettingsDemoContentView.swift in Sources */,
+				215B14C82E0049A200DD5C3F /* StopwatchOnMacDemoApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		215B14BE2E00498D00DD5C3F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = W7TTKAZX72;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		215B14BF2E00498D00DD5C3F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = W7TTKAZX72;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		215B14C12E00498D00DD5C3F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COMPILATION_CACHE_ENABLE_CACHING = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W7TTKAZX72;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = xezrunner.StopwatchOnMacDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		215B14C22E00498D00DD5C3F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COMPILATION_CACHE_ENABLE_CACHING = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W7TTKAZX72;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = xezrunner.StopwatchOnMacDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		215B14B02E00498B00DD5C3F /* Build configuration list for PBXProject "StopwatchOnMacDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				215B14BE2E00498D00DD5C3F /* Debug */,
+				215B14BF2E00498D00DD5C3F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		215B14C02E00498D00DD5C3F /* Build configuration list for PBXNativeTarget "StopwatchOnMacDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				215B14C12E00498D00DD5C3F /* Debug */,
+				215B14C22E00498D00DD5C3F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 215B14AD2E00498B00DD5C3F /* Project object */;
+}
