@@ -26,8 +26,8 @@ internal struct StopwatchWindowBorder: View {
         let randomX = CGFloat.random(in: -endRadius...endRadius) / endRadius
         let randomY = CGFloat.random(in: -endRadius...endRadius) / endRadius
         let gradient = RadialGradient(stops: [
-            Gradient.Stop(color: .white, location: 1),
             Gradient.Stop(color: .clear, location: 0),
+            Gradient.Stop(color: .white, location: 1),
         ], center: UnitPoint(x: randomX, y: randomY), startRadius: 0, endRadius: endRadius)
         
         RoundedRectangle(cornerRadius: STOPWATCH_WINDOW_CORNER_RADIUS)
@@ -50,7 +50,7 @@ func _UnfocusAllViews() {
 extension View {
     public func _StopwatchStyling(needsBorder: Bool = true) -> some View {
         self
-            .preferredColorScheme(.dark) // TODO: we don't necessarily want to force dark mode, but visionOS does seem more like dark mode
+            .preferredColorScheme(.dark) // TODO: might want to explore 'light mode'
             .tint(.primary)
         
             .containerBackground(.ultraThinMaterial, for: .window)
