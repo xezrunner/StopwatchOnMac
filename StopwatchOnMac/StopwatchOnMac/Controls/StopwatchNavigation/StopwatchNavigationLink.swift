@@ -49,6 +49,8 @@ public struct StopwatchNavigationLink<Destination: View, Label: View, Value: Has
     }
     
     var isSelected: Bool {
+        if !selectionStore.isActive { return false }
+        
         // TODO: edge cases!
         if let value = value ?? _destinationImplicitID {
             let selection = selectionStore.selection as? Value ?? nil
