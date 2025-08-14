@@ -84,14 +84,18 @@ extension StopwatchList {
     // The use case wanted to be nested lists, but with a top-level selection within StopwatchList.
     #if true
     public init<UserContent: View>(selection: Binding<Selection>, @ViewBuilder content: @escaping () -> UserContent)
-    where Content == ForEach<ForEachSectionCollection<Section<SubviewsCollection, ForEach<ForEachSubviewCollection<_StopwatchListContentSelectionWrapper<Subview, Selection?>>, Subview.ID, _StopwatchListContentSelectionWrapper<Subview, Selection?>>, EmptyView>>, SectionConfiguration.ID, Section<SubviewsCollection, ForEach<ForEachSubviewCollection<_StopwatchListContentSelectionWrapper<Subview, Selection?>>, Subview.ID, _StopwatchListContentSelectionWrapper<Subview, Selection?>>, EmptyView>> // wow...
+    where Content ==
+    ForEach<ForEachSectionCollection<Section<SubviewsCollection, ForEach<ForEachSubviewCollection<_StopwatchListContentSelectionWrapper<Subview, Selection>>, Subview.ID, _StopwatchListContentSelectionWrapper<Subview, Selection>>, EmptyView>>, SectionConfiguration.ID, Section<SubviewsCollection, ForEach<ForEachSubviewCollection<_StopwatchListContentSelectionWrapper<Subview, Selection>>, Subview.ID, _StopwatchListContentSelectionWrapper<Subview, Selection>>, EmptyView>> // wow... (Xcode gave us this monstrosity)
     {
         self.content = {
             ForEach(sections: content()) { section in
                 // We have to go through the sections ourselves, so that we both support Sections, as well as wrap entries for implicit selection:
                 Section {
                     ForEach(subviews: section.content) { subview in
-                        _StopwatchListContentSelectionWrapper(valueForSelection: subview.containerValues.tag(for: Selection?.self)) {
+                        // ⚠️ The value for selection (view tag you provide) and the selection type have to be consistent
+                        // (including whether it is optional or not) in order for selection wrapping with valueForSelection: to work!
+                        // TODO: changing .tag(for:) here to Selection instead of Selection? made it work.
+                        _StopwatchListContentSelectionWrapper(valueForSelection: subview.containerValues.tag(for: Selection.self)) {
                             subview
                         }
                     }
@@ -257,7 +261,7 @@ internal struct StopwatchListSectionLayout<Content: View>: View {
 //                     .overlay { Text("last: \(lastID!.hashValue)  id: \(id.hashValue)").font(.callout) }
                     
                     if listStyleConfiguration.rowSeparatorEnabled && count > 1 && id != lastID {
-                        Divider()
+                        Divider().foregroundStyle(.gray)
                     }
                 }
             }

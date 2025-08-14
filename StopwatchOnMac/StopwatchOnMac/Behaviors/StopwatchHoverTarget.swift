@@ -32,9 +32,9 @@ internal struct SWHoverTargetViewModifier: ViewModifier {
                 }
             })
             .onHover { hovering in
-                withAnimation(SWAnimationLibrary.buttonPressAnimation) { isHovering = hovering }
+                withAnimation(SWAnimationLibrary.buttonPress) { isHovering = hovering }
             }
-            .animation(SWAnimationLibrary.buttonPressAnimation, value: isPressed)
+            .animation(SWAnimationLibrary.buttonPress, value: isPressed)
             // FIXME: cursor position doesn't update during long press!
             // This hasn't worked in XRPrototype either.
     }
