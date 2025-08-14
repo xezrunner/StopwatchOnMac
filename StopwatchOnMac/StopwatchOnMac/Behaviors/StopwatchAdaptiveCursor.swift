@@ -28,7 +28,7 @@ internal struct SWAdaptiveCursorViewModifier: ViewModifier {
                     currentSize = newValue
                 }
                 .onHover { hovering in
-                    withAnimation(SWAnimationLibrary.buttonPressAnimation) { isHovering = hovering }
+                    withAnimation(SWAnimationLibrary.buttonPress) { isHovering = hovering }
                     hovering ? NSCursor.hide() : NSCursor.unhide()
                 }
                 .onContinuousHover(coordinateSpace: .local, perform: { hoverPhase in

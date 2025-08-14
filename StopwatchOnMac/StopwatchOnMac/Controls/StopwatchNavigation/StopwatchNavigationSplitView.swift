@@ -7,10 +7,11 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
     private var viewLinkageDetail  = SWNavigationViewLinkage()
     private var viewLinkageContent = SWNavigationViewLinkage()
     
+    @State var toolbarController = SWToolbarController()
+    
     @State var sidebarSelectionStore = SWSelectionStore()
     
     @State private var detailTitle: String?
-    @State private var detailToolbarViews: [SWToolbarContent] = []
     
     @Environment(\.stopwatchNavigationSplitViewDetailBackgroundTint) var detailBackgroundTint
     
@@ -69,40 +70,36 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
                 )
             
                 .safeAreaInset(edge: .top) {
-                    HStack {
+                    ZStack {
                         if let title = detailTitle {
                             Text(title)
                                 .font(.system(size: 22, weight: .semibold))
-                                .padding(.top, 32)
-                                .ignoresSafeArea(.all, edges: .top)
                         }
+                        
+                        SWToolbarHost()
                     }
-                }
-            
-                .safeAreaInset(edge: .top, alignment: .leading) {
-                    HStack {
-                        if !detailNavigationPath.isEmpty {
-                            Button {
-                                detailNavigationPath.removeLast()
-                            } label: {
-                                Image(systemName: "chevron.left")
-                            }
-                            .stopwatchButtonStyleConfiguration(.circular)
-                        }
-                    }
-                    .padding(.horizontal, 24)
-                }
-            
-                .onPreferenceChange(StopwatchToolbarContentPreferenceKey.self) { views in
-                    detailToolbarViews = views
+                    .ignoresSafeArea(.all, edges: .top)
+                    .frame(height: 50) // FIXME: height!
                 }
                 .onPreferenceChange(StopwatchNavigationTitlePreferenceKey.self) { title in
                     detailTitle = title
                 }
             
+                .stopwatchToolbar {
+                    if !detailNavigationPath.isEmpty {
+                        StopwatchToolbarItem(placement: .leading) {
+                            Button {
+                                if !detailNavigationPath.isEmpty { detailNavigationPath.removeLast() }
+                            } label: {
+                                Image(systemName: "chevron.left")
+                            }
+                        }
+                    }
+                }
                 .environment(\.stopwatchNavigationPath, $detailNavigationPath)
         }
         .environment(viewLinkageDetail)
+        .environment(toolbarController)
     }
 }
 
