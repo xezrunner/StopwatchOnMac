@@ -243,7 +243,7 @@ internal struct StopwatchListSectionLayout<Content: View>: View {
     @Environment(\.stopwatchSelectionStore) var selectionStore
     
     var body: some View {
-        LazyVStack(spacing: 0) {
+        LazyVStack(spacing: listStyleConfiguration.spacing) {
             Group(subviews: content) { subviews in
                 let count  = subviews.count
                 let lastID = subviews.last?.id
