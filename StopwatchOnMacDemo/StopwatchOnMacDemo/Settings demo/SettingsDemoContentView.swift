@@ -208,7 +208,7 @@ struct SettingsDemoContentView: View {
                             Section(collection.title ?? "") {
                                 ForEach(collection.pages) { entry in
                                     // FIXME: should not highlight selection when navigation inferred!
-                                    StopwatchNavigationLink(destination: {}, label: {entry.label})
+                                    StopwatchNavigationLink(destination: { entry.content }, label: {entry.label})
                                 }
                             }
                         }

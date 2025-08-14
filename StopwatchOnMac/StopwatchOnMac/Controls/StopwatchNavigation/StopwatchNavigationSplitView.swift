@@ -47,16 +47,26 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
             
             let detailNavigationStackRoot = {
                 Group {
-                    if let view = viewLinkageDetail.view {
+                    if let view = viewLinkageDetail.view { // TODO: get rid of viewLinkage
                         view()
-                    } else {
+                    } else if detailNavigationPath.count == 0 { // root view of NavigationStack
                         AnyView(detail())
+                            .transition(.blurReplace)
+                    } else {
+                        EmptyView()
                     }
                 }
                 .navigationBarBackButtonHidden()
                 .navigationDestination(for: SWNavigationImplicitDestinationID.self) { item in
                     SWNavigationAnyViewPathWrapper.Registry[item]?() // Implicit destination
+                        .transition(.blurReplace) // subview transition
                 }
+                
+                // Animate root view:
+                .animation(SWAnimationLibrary.navigationStackAnimation, value: detailNavigationPath)
+                // Disable implicit layout animations for root view:
+                // ⚠️ Order matters here! We don't want the .transaction block to affect our .animation!
+                .transaction { t in t.animation = nil }
             }
                 
             NavigationStack(path: $detailNavigationPath, root: detailNavigationStackRoot)
@@ -66,6 +76,8 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
                         .ignoresSafeArea()
                         .blendMode(.softLight)
                 )
+            
+                .animation(SWAnimationLibrary.navigationStackAnimation, value: detailNavigationPath)
             
                 .safeAreaInset(edge: .top) {
                     if let title = detailTitle {
