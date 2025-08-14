@@ -107,6 +107,7 @@ internal struct SWToolbarHost: View {
                             makeToolbarItemView(itemData: item)
                         }
                     }
+                    .stopwatchButtonStyleConfiguration(.circular)
                 }
             } else {
                 Text("⚠️ No SWToolbarController in environment!")
