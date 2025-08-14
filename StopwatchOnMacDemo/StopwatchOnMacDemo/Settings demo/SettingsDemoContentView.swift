@@ -16,7 +16,17 @@ struct SettingsDemoEmptyPage: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        Text("< page >")
+        StopwatchList {
+            Section("") {
+                NavigationLink(destination: {}, label: { Label("Test #1", systemImage: "gear") })
+                NavigationLink(destination: {}, label: { Label("Test #2", systemImage: "gear") })
+                NavigationLink(destination: {}, label: { Label("Test #3", systemImage: "gear") })
+            }
+            
+            Section("Content") {
+                Text("< page >")
+            }
+        }
         //            .toolbar {
         //                ToolbarItem(placement: .navigation) {
         //                    Button {

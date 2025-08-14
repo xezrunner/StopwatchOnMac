@@ -53,14 +53,17 @@ public struct StopwatchNavigationSplitView<Selection: Hashable, Sidebar: View, C
                         view()
                     } else if detailNavigationPath.count == 0 { // root view of NavigationStack
                         AnyView(detail())
-                            .transition(.blurReplace)
+                            // TODO: blurReplace is the transition used on visionOS, however, it scales way less there.
+                            // If possible, we should alter this transtiion such that it scales less. As a workaround, we can
+                            // combine it with a .scale that will offset the blurReplace scaling, for now:
+                            .transition(.blurReplace.combined(with: .scale(1.065))) // @NavigationTransitionScaling
                     } else {
                         EmptyView()
                     }
                 }
                 .navigationDestination(for: SWNavigationImplicitDestinationID.self) { item in
                     SWNavigationAnyViewPathWrapper.Registry[item]?() // Implicit destination
-                        .transition(.blurReplace) // subview transition
+                        .transition(.blurReplace.combined(with: .scale(1.145))) // subview transition  @NavigationTransitionScaling
                         .navigationBarBackButtonHidden()
                 }
                 
