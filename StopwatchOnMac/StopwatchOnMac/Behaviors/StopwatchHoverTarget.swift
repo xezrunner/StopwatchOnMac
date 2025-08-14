@@ -28,13 +28,13 @@ internal struct SWHoverTargetViewModifier: ViewModifier {
                 switch hoverPhase {
                 case .active(let location):
                     localMousePoint = UnitPoint(x: location.x, y: location.y)
-                case .ended: break
+                case .ended:
+                    isHovering = false
                 }
             })
             .onHover { hovering in
-                withAnimation(SWAnimationLibrary.buttonPress) { isHovering = hovering }
+                isHovering = hovering
             }
-            .animation(SWAnimationLibrary.buttonPress, value: isPressed)
             // FIXME: cursor position doesn't update during long press!
             // This hasn't worked in XRPrototype either.
     }
@@ -55,6 +55,8 @@ internal struct SWHoverTargetViewModifier: ViewModifier {
                     endRadius: /*!isHovering ? 0 :*/
                     max(100, ((currentSize.width + currentSize.height) / 2) * 4))
             )
+            .animation(SWAnimationLibrary.buttonPress, value: isPressed)
+            .animation(SWAnimationLibrary.buttonPress, value: isHovering)
     }
 }
 

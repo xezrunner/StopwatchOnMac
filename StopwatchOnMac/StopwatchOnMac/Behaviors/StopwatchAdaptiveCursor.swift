@@ -27,19 +27,22 @@ internal struct SWAdaptiveCursorViewModifier: ViewModifier {
                 .onGeometryChange(for: CGSize.self) { return $0.size } action: { newValue in
                     currentSize = newValue
                 }
+            
+                .offset(isHovering ? adaptiveHoverOffset : .zero)
+                .animation(SWAnimationLibrary.buttonPress, value: isHovering)
+            
                 .onHover { hovering in
-                    withAnimation(SWAnimationLibrary.buttonPress) { isHovering = hovering }
+                    isHovering = hovering
                     hovering ? NSCursor.hide() : NSCursor.unhide()
                 }
                 .onContinuousHover(coordinateSpace: .local, perform: { hoverPhase in
                     switch hoverPhase {
                     case .active(let location):
                         localMousePoint = UnitPoint(x: location.x, y: location.y)
-                    case .ended: break
+                    case .ended:
+                        isHovering = false
                     }
                 })
-            
-                .offset(isHovering ? adaptiveHoverOffset : .zero)
         }
     }
 }

@@ -44,12 +44,13 @@ public struct StopwatchButtonStyle: ButtonStyle {
             .padding(.horizontal, styleConfiguration.outerPadding.horizontal)
             .padding(.vertical,   styleConfiguration.outerPadding.vertical)
         
-            .contentShape(AnyShape(styleConfiguration.shape))
+            .stopwatchWantsAdaptiveCursor(styleConfiguration.wantsAdaptiveCursor)
         
-//            .stopwatchWantsAdaptiveCursor(false)
+            .contentShape(AnyShape(styleConfiguration.shape))
         
             .onChange(of: configuration.isPressed) { _, newValue in
                 isPressed = newValue
+                if !newValue { NSCursor.unhide() } // unhide cursor after clicking a button with adaptive cursor enabled
             }
     }
 }
@@ -105,6 +106,8 @@ public struct StopwatchButtonStyleConfiguration {
     var pressedScale: CGFloat = 0.95
     
     var labelIconSize: CGFloat = 17.0 // font size for icon Image
+    
+    var wantsAdaptiveCursor: Bool = false
 }
 
 extension StopwatchButtonStyleConfiguration {
@@ -146,6 +149,7 @@ extension StopwatchButtonStyleConfiguration {
         styleConfig.padding   = (8, 8)
         styleConfig.maxWidth  = 24
         styleConfig.maxHeight = 24
+        styleConfig.wantsAdaptiveCursor = true
         
         return styleConfig
     }
